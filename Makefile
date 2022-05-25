@@ -9,21 +9,37 @@ ifndef verbose
 endif
 
 ifeq ($(config),debug)
+  GLFW_config = debug
+  GLAD_config = debug
   Flow_config = debug
   Sandbox_config = debug
 endif
 ifeq ($(config),release)
+  GLFW_config = release
+  GLAD_config = release
   Flow_config = release
   Sandbox_config = release
 endif
 
-PROJECTS := Flow Sandbox
+PROJECTS := GLFW GLAD Flow Sandbox
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-Flow:
+GLFW:
+ifneq (,$(GLFW_config))
+	@echo "==== Building GLFW ($(GLFW_config)) ===="
+	@${MAKE} --no-print-directory -C Flow/3rdParty -f GLFW.make config=$(GLFW_config)
+endif
+
+GLAD:
+ifneq (,$(GLAD_config))
+	@echo "==== Building GLAD ($(GLAD_config)) ===="
+	@${MAKE} --no-print-directory -C Flow/3rdParty -f GLAD.make config=$(GLAD_config)
+endif
+
+Flow: GLFW GLAD
 ifneq (,$(Flow_config))
 	@echo "==== Building Flow ($(Flow_config)) ===="
 	@${MAKE} --no-print-directory -C Flow -f Makefile config=$(Flow_config)
@@ -36,6 +52,8 @@ ifneq (,$(Sandbox_config))
 endif
 
 clean:
+	@${MAKE} --no-print-directory -C Flow/3rdParty -f GLFW.make clean
+	@${MAKE} --no-print-directory -C Flow/3rdParty -f GLAD.make clean
 	@${MAKE} --no-print-directory -C Flow -f Makefile clean
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile clean
 
@@ -49,6 +67,8 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
+	@echo "   GLFW"
+	@echo "   GLAD"
 	@echo "   Flow"
 	@echo "   Sandbox"
 	@echo ""

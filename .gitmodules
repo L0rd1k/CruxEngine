@@ -1,0 +1,6 @@
+[submodule "Flow/3rdParty/GLFW"]
+	path = Flow/3rdParty/GLFW
+	url = https://github.com/glfw/glfw
+[submodule "Flow/3rdParty/GLAD"]
+	path = Flow/3rdParty/GLAD
+	url = https://github.com/Dav1dde/glad

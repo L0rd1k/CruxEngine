@@ -7,6 +7,14 @@ workspace "FlowEngine"
 
 finalDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Flow/3rdParty/GLFW/include"
+IncludeDir["GLAD"] = "Flow/3rdParty/GLAD/include"
+
+include "Flow/3rdParty/glfw.lua"
+include "Flow/3rdParty/glad.lua"
+
+
 project "Flow"
    location "Flow"
    kind "SharedLib"
@@ -19,6 +27,16 @@ project "Flow"
    files { 
       "%{prj.name}/src/**.h", 
       "%{prj.name}/src/**.cpp" 
+   }
+
+   includedirs {
+      "%{IncludeDir.GLFW}",
+      "%{IncludeDir.GLAD}"
+   }
+
+   links {
+      "GLFW",
+      "GLAD",
    }
 
    filter "system:linux"

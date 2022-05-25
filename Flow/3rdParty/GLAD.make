@@ -12,20 +12,20 @@ endif
 
 ifeq ($(config),debug)
   RESCOMP = windres
-  TARGETDIR = ../build/Debug-linux-x86_64/Flow
-  TARGET = $(TARGETDIR)/libFlow.so
-  OBJDIR = ../build/Debug-linux-x86_64/Flow
-  DEFINES += -DFL_DEBUG
-  INCLUDES += -I3rdParty/GLFW/include -I3rdParty/GLAD/include
+  TARGETDIR = build/Debug-linux-x86_64/GLAD
+  TARGET = $(TARGETDIR)/libGLAD.a
+  OBJDIR = build/Debug-linux-x86_64/GLAD
+  DEFINES += -D_GLAD_X11
+  INCLUDES += -IGLAD/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g -std=c++17
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += 3rdParty/build/Debug-linux-x86_64/GLFW/libGLFW.a 3rdParty/build/Debug-linux-x86_64/GLAD/libGLAD.a
-  LDDEPS += 3rdParty/build/Debug-linux-x86_64/GLFW/libGLFW.a 3rdParty/build/Debug-linux-x86_64/GLAD/libGLAD.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libFlow.so
-  LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
+  LIBS +=
+  LDDEPS +=
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+  LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -39,20 +39,20 @@ endif
 
 ifeq ($(config),release)
   RESCOMP = windres
-  TARGETDIR = ../build/Release-linux-x86_64/Flow
-  TARGET = $(TARGETDIR)/libFlow.so
-  OBJDIR = ../build/Release-linux-x86_64/Flow
-  DEFINES += -DFL_NDEBUG
-  INCLUDES += -I3rdParty/GLFW/include -I3rdParty/GLAD/include
+  TARGETDIR = build/Release-linux-x86_64/GLAD
+  TARGET = $(TARGETDIR)/libGLAD.a
+  OBJDIR = build/Release-linux-x86_64/GLAD
+  DEFINES += -D_GLAD_X11
+  INCLUDES += -IGLAD/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC -std=c++17
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += 3rdParty/build/Release-linux-x86_64/GLFW/libGLFW.a 3rdParty/build/Release-linux-x86_64/GLAD/libGLAD.a
-  LDDEPS += 3rdParty/build/Release-linux-x86_64/GLFW/libGLFW.a 3rdParty/build/Release-linux-x86_64/GLAD/libGLAD.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=libFlow.so -s
-  LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
+  LIBS +=
+  LDDEPS +=
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+  LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -65,8 +65,7 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/Application.o \
-	$(OBJDIR)/Core.o \
+	$(OBJDIR)/glad.o \
 
 RESOURCES := \
 
@@ -78,7 +77,7 @@ ifeq (.exe,$(findstring .exe,$(ComSpec)))
 endif
 
 $(TARGET): $(GCH) ${CUSTOMFILES} $(OBJECTS) $(LDDEPS) $(RESOURCES) | $(TARGETDIR)
-	@echo Linking Flow
+	@echo Linking GLAD
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -101,7 +100,7 @@ else
 endif
 
 clean:
-	@echo Cleaning Flow
+	@echo Cleaning GLAD
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -120,17 +119,14 @@ ifneq (,$(PCH))
 $(OBJECTS): $(GCH) $(PCH) | $(OBJDIR)
 $(GCH): $(PCH) | $(OBJDIR)
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
+	$(SILENT) $(CC) -x c-header $(ALL_CFLAGS) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/Application.o: src/Flow/Application.cpp
+$(OBJDIR)/glad.o: GLAD/src/glad.c
 	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Core.o: src/Flow/Core.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
 ifneq (,$(PCH))
