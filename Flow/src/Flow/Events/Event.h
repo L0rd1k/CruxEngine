@@ -51,9 +51,11 @@ enum EventCategory {
 #define GetClassName(className) std::string classname() { return #className; }
 
 class Event {
-    friend class EventDispatcher;
+    // friend class EventDispatcher;
 
 public:
+    bool isHandled = false;
+
     virtual EventTypes GetEventType() const = 0;
     virtual const char* GetName() const = 0;
     virtual int GetCategoryFlags() const = 0;
@@ -64,8 +66,8 @@ public:
         return GetCategoryFlags() & category;
     }
 
-protected:
-    bool isHandled = false;
+// protected:
+//     bool isHandled = false;
 };
 
 class EventDispatcher {

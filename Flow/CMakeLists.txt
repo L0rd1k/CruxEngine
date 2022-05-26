@@ -5,6 +5,8 @@ project(Flow)
 set(SOURCES 
 src/Flow/Application.cpp
 src/Flow/Window/Linux/LinuxWindow.cpp
+src/Flow/Layer/Layer.cpp
+src/Flow/Layer/LayerSet.cpp
 )
 
 find_package(OpenGL REQUIRED)
