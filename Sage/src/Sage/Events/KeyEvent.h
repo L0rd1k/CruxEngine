@@ -2,7 +2,7 @@
 
 #include "Event.h"
 
-namespace Flow {
+namespace Sage {
 
 class KeyEvent : public Event {
 public:
@@ -47,4 +47,4 @@ public:
     EVENT_CLASS_TYPE(KeyReleased)
 };
 
-}  // namespace Flow
+}  // namespace Sage

@@ -1,4 +1,4 @@
-workspace "FlowEngine"
+workspace "SageEngine"
    architecture "x64"
 
    configurations { 
@@ -9,11 +9,11 @@ workspace "FlowEngine"
 finalDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Flow/3rdParty/GLFW/include"
-include "Flow/3rdParty/GLFW"
+IncludeDir["GLFW"] = "Sage/3rdParty/GLFW/include"
+include "Sage/3rdParty/GLFW"
 
-project "Flow"
-   location "Flow"
+project "Sage"
+   location "Sage"
    kind "SharedLib"
    language "C++"
 
@@ -68,11 +68,11 @@ project "Sandbox"
    }
 
    includedirs {
-      "Flow/src",
+      "Sage/src",
    }
 
    links {
-      "Flow"
+      "Sage"
    }
 
    filter "system:linux"

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <memory>
 
-namespace Flow {
+namespace Sage {
 
 class Application {
    public:
@@ -30,4 +30,4 @@ private:
 
 Application* CreateApplication();
 
-}  // namespace Flow
+}  // namespace Sage

@@ -5,7 +5,7 @@
 #include "../../Events/MouseEvent.h"
 #include "../../Events/ApplicationEvent.h"
 
-namespace Flow {
+namespace Sage {
 
 class LinuxWindow : public Window {
 public:
@@ -42,4 +42,4 @@ private:
 };
 
     
-} // namespace Flow  
+} // namespace Sage  

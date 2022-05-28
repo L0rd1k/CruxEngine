@@ -5,7 +5,7 @@
 
 #include "Layer.h"
 
-namespace Flow {
+namespace Sage {
 
 class LayerSet {
 public:
@@ -29,4 +29,4 @@ private:
     std::vector<Layer*>::iterator _layerInsert;
 };
 
-}  // namespace Flow
+}  // namespace Sage

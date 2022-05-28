@@ -6,12 +6,13 @@
 
 #include "../Events/Event.h"
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-namespace Flow {
+namespace Sage {
 
 struct WindowConf {
-    WindowConf(const std::string& title = "FlowEngine", 
+    WindowConf(const std::string& title = "SageEngine", 
         unsigned int w = 1280, unsigned int h = 720) :
     headerTitle(title), width(w), height(h) {
     }  
@@ -35,4 +36,4 @@ public:
     static Window* create(const WindowConf& conf = WindowConf());
 };
 
-}  // namespace Flow
+}  // namespace Sage

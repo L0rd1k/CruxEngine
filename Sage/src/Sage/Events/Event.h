@@ -5,11 +5,11 @@
 #include <string>
 #include <sstream>
 
-// #include "Flow/Core.h"
+// #include "Sage/Core.h"
 
 #define BIT(x) (1 << x)
 
-namespace Flow {
+namespace Sage {
 
 /** @brief Existing event's types **/
 enum class EventTypes {
@@ -94,4 +94,4 @@ inline std::ostream& operator<<(std::ostream& os, const Event& e) {
 }
 
 
-}  // namespace Flow  
+}  // namespace Sage  

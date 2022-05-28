@@ -1,6 +1,6 @@
 #include "LinuxWindow.h"
 
-namespace Flow {
+namespace Sage {
 
 static bool _isGlfwInitialized = false;
 static void GLFWErrorCallback(int error, const char* msg) {
@@ -37,6 +37,7 @@ void LinuxWindow::init(const WindowConf& conf) {
 
     _window = glfwCreateWindow((int)conf.width, (int)conf.height, _data.title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(_window);
+    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     glfwSetWindowUserPointer(_window, &_data);
     setVSync(true);
 
@@ -123,4 +124,4 @@ bool LinuxWindow::isVSunc() const {
     return _data.isVSync;
 }
 
-}  // namespace Flow
+}  // namespace Sage

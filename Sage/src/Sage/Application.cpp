@@ -1,9 +1,9 @@
 #include "Application.h"
 
-
-namespace Flow {
+namespace Sage {
 
 Application::Application() {
+    gladLoadGL();
     _window = std::unique_ptr<Window>(Window::create());
     _window->setEventCallback(std::bind(&Application::onApplyEvent, this, std::placeholders::_1));
 }

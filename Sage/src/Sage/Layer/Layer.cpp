@@ -1,6 +1,6 @@
 #include "Layer.h"
 
-namespace Flow {
+namespace Sage {
 
 Layer::Layer(const std::string& layerName) : 
 _layerName(layerName) {

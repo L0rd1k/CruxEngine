@@ -2,7 +2,7 @@
 
 #include "Event.h"
 
-namespace Flow {
+namespace Sage {
 
 class WindowResizeEvent : public Event {
 public:

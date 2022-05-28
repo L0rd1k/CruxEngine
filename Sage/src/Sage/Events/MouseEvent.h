@@ -2,7 +2,7 @@
 
 #include "Event.h"
 
-namespace Flow {
+namespace Sage {
 
 class MouseMovedEvent : public Event {
 public:
@@ -76,4 +76,4 @@ public:
 };
 
 
-}  // namespace Flow
+}  // namespace Sage

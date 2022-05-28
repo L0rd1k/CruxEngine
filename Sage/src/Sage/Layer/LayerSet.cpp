@@ -1,6 +1,6 @@
 #include "LayerSet.h"
 
-namespace Flow {
+namespace Sage {
 
 LayerSet::LayerSet() {
     _layerInsert = _layers.begin();
