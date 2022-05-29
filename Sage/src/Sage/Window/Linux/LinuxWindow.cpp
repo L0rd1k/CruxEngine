@@ -37,7 +37,7 @@ void LinuxWindow::init(const WindowConf& conf) {
 
     _window = glfwCreateWindow((int)conf.width, (int)conf.height, _data.title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(_window);
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress); //> Make use of existing GLFW loader; 
     glfwSetWindowUserPointer(_window, &_data);
     setVSync(true);
 

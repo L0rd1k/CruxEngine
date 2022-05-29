@@ -17,12 +17,11 @@ class Application {
     virtual ~Application();
     void run();
     void onApplyEvent(Event& event);
-
     void pushLayer(Layer* layer);
     void pushOverlay(Layer* layer);
-
 private:
     bool onWindowClose(WindowCloseEvent& e);
+private:
     std::unique_ptr<Window> _window;
     bool _isRunning = true;
     LayerSet _layerSet;

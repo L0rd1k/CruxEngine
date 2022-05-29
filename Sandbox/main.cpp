@@ -4,6 +4,7 @@ class ExampleLayer : public Sage::Layer {
 public:
 	ExampleLayer() : Layer("Example") {
 	}
+
 	void onUpdate() override {
 	}
 	void onEvent(Sage::Event& event) override {

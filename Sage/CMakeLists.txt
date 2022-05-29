@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.0...3.5)
 
 project(Sage)
 
-
 set(SOURCES 
     src/Sage/Application.cpp
     src/Sage/Window/Linux/LinuxWindow.cpp
@@ -19,6 +18,7 @@ set(GLFW_BUILD_INSTALL OFF CACHE BOOL "GLFW lib only")
 
 add_subdirectory(3rdParty/GLAD)
 add_subdirectory(3rdParty/GLFW)
+add_subdirectory(3rdParty/ImGui)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
-target_link_libraries(${PROJECT_NAME} GL glfw glad)
+target_link_libraries(${PROJECT_NAME} GL glfw glad ImGui)

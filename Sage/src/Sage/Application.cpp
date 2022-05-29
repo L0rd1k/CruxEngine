@@ -1,9 +1,10 @@
 #include "Application.h"
 
+#include "imgui.h"
+
 namespace Sage {
 
 Application::Application() {
-    gladLoadGL();
     _window = std::unique_ptr<Window>(Window::create());
     _window->setEventCallback(std::bind(&Application::onApplyEvent, this, std::placeholders::_1));
 }
@@ -29,8 +30,6 @@ void Application::onApplyEvent(Event& e) {
             break;
         }
     }
-
-
 }
 
 bool Application::onWindowClose(WindowCloseEvent& e) {
@@ -39,8 +38,11 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
+    ImGui::Begin("p2chack", nullptr, 0);
+    ImGui::End();
+
     while(_isRunning) {
-        glClearColor(0,0,1,1);
+        glClearColor(0, 0, 1, 1);
         glClear(GL_COLOR_BUFFER_BIT);
 
         for(Layer* layer : _layerSet) {
@@ -49,6 +51,7 @@ void Application::run() {
 
         _window->onUpdate();
     }
+
 }
 
 }
