@@ -1,0 +1,14 @@
+[submodule "Sage/3rdParty/GLFW"]
+	path = Sage/3rdParty/GLFW
+	url = https://github.com/glfw/glfw
+[submodule "Sage/3rdParty/GLAD"]
+	path = Sage/3rdParty/GLAD
+	url = https://github.com/Dav1dde/glad
+	ignore = dirty
+[submodule "glfw"]
+	path = glfw
+	url = https://github.com/glfw/glfw
+[submodule "Sage/3rdParty/ImGui"]
+	path = Sage/3rdParty/ImGui
+	url = https://github.com/ocornut/imgui.git
+	ignore = dirty
