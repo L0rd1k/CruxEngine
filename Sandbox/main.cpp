@@ -4,11 +4,10 @@ class ExampleLayer : public Sage::Layer {
 public:
 	ExampleLayer() : Layer("Example") {
 	}
-
 	void onUpdate() override {
 	}
 	void onEvent(Sage::Event& event) override {
-		std::cout << getName() << ": " << event.GetName() << " " << event.ToString() << std::endl;
+		Sage::Log::debug(getName(), ": ", event.GetName(), " ", event.ToString());
 	}
 };
 

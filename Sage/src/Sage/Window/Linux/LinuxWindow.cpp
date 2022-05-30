@@ -23,21 +23,20 @@ void LinuxWindow::init(const WindowConf& conf) {
     _data.height = conf.height;
     _data.width = conf.width;
 
-    std::cout << "Linux window creating: " <<  conf.headerTitle << " " 
-        << " " << conf.height << " x " << conf.width << std::endl;
+    Log::info("Linux window creating: ", conf.headerTitle, " ", conf.height, " x ", conf.width);
 
-    if(!_isGlfwInitialized) {
-        if(!glfwInit()) {
+    if (!_isGlfwInitialized) {
+        if (!glfwInit()) {
             std::cerr << "Could not initilaize GLFW!" << std::endl;
             glfwSetErrorCallback(GLFWErrorCallback);
-            return ;
+            return;
         }
         _isGlfwInitialized = true;
     }
 
     _window = glfwCreateWindow((int)conf.width, (int)conf.height, _data.title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(_window);
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress); //> Make use of existing GLFW loader; 
+    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);  //> Make use of existing GLFW loader;
     glfwSetWindowUserPointer(_window, &_data);
     setVSync(true);
 
@@ -53,8 +52,8 @@ void LinuxWindow::init(const WindowConf& conf) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         WindowCloseEvent event;
         data.eventCallback(event);
-    }); 
- 
+    });
+
     glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         switch (action) {
@@ -62,17 +61,19 @@ void LinuxWindow::init(const WindowConf& conf) {
                 KeyPressedEvent event(key, 0);
                 data.eventCallback(event);
                 break;
-            } case GLFW_RELEASE: {
+            }
+            case GLFW_RELEASE: {
                 KeyReleasedEvent event(key);
                 data.eventCallback(event);
                 break;
-            } case GLFW_REPEAT: {
+            }
+            case GLFW_REPEAT: {
                 KeyPressedEvent event(key, 1);
                 data.eventCallback(event);
                 break;
-            } 
+            }
         }
-    }); 
+    });
 
     glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int modes) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -81,21 +82,22 @@ void LinuxWindow::init(const WindowConf& conf) {
                 MouseButtonPressedEvent event(button);
                 data.eventCallback(event);
                 break;
-            } case GLFW_RELEASE: {
+            }
+            case GLFW_RELEASE: {
                 MouseButtonReleasedEvent event(button);
                 data.eventCallback(event);
-                break; 
+                break;
             }
         }
     });
 
-    glfwSetScrollCallback(_window, [](GLFWwindow* window, double xOffset,double yOffset) {
+    glfwSetScrollCallback(_window, [](GLFWwindow* window, double xOffset, double yOffset) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         MouseScrolledEvent event((float)xOffset, (float)yOffset);
         data.eventCallback(event);
     });
 
-    glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xPos,double yPos){
+    glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xPos, double yPos) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         MouseMovedEvent event((float)xPos, (float)yPos);
         data.eventCallback(event);
@@ -112,13 +114,13 @@ void LinuxWindow::onUpdate() {
 }
 
 void LinuxWindow::setVSync(bool enabled) {
-    if(enabled) {
+    if (enabled) {
         glfwSwapInterval(1);
     } else {
         glfwSwapInterval(0);
     }
     _data.isVSync = enabled;
-} 
+}
 
 bool LinuxWindow::isVSunc() const {
     return _data.isVSync;

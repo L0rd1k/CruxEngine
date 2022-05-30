@@ -5,6 +5,7 @@
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 #include "Layer/LayerSet.h"
+#include "Utils/Logger/Log.h"
 
 #include <iostream>
 #include <memory>
