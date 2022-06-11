@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Window/Window.h"
+#include "window/window.h"
 
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
-#include "Layer/LayerSet.h"
-#include "Utils/Logger/Log.h"
+#include "events/event.h"
+#include "events/application_event.h"
+#include "layer/layer_set.h"
+#include "utils/logger/log.h"
 
 #include <iostream>
 #include <memory>
+
+#include "dstructs/array/array.h"
 
 namespace Sage {
 

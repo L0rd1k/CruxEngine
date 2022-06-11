@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.0...3.5)
 project(Sage)
 
 set(SOURCES 
-    src/Sage/Application.cpp
-    src/Sage/Window/Linux/LinuxWindow.cpp
-    src/Sage/Layer/Layer.cpp
-    src/Sage/Layer/LayerSet.cpp
+    src/sage/application.cpp
+    src/sage/window/linux/linux_window.cpp
+    src/sage/layer/layer.cpp
+    src/sage/layer/layer_set.cpp
 )
 
 find_package(OpenGL REQUIRED)

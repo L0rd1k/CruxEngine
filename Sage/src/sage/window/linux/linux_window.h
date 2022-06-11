@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Window.h"
-#include "../../Events/KeyEvent.h"
-#include "../../Events/MouseEvent.h"
-#include "../../Events/ApplicationEvent.h"
+#include "../window.h"
+#include "../../events/key_event.h"
+#include "../../events/mouse_event.h"
+#include "../../events/application_event.h"
 
 namespace Sage {
 

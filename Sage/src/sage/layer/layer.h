@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../Events/Event.h"
+#include "../events/event.h"
 
 namespace Sage {
 

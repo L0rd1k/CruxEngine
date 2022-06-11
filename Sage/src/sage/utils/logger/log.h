@@ -27,42 +27,42 @@ public:
 
     template <typename... Args>
     static void error(Args&&... args) {
-        std::cout << "[" << getTime() << "] ";
-        ((std::cout << "\033[1;31;49m" <<std::forward<Args>(args)), ...);
+        std::cout << "[" << getTime() << "]";
+        ((std::cout << "\033[1;31;49m" << " " <<std::forward<Args>(args)), ...);
         std::cout << "\033[0m" << std::endl;
     }
 
     template <typename... Args>
     static void warning(Args&&... args) {
-        std::cout << "[" << getTime() << "] ";
-        ((std::cout << "\033[1;35;49m" << std::forward<Args>(args)), ...);
+        std::cout << "[" << getTime() << "]";
+        ((std::cout << "\033[1;35;49m" << " " << std::forward<Args>(args)), ...);
         std::cout << "\033[0m" << std::endl;
     }
 
     template <typename... Args>
     static void trace(Args&&... args) {
-        std::cout << "[" << getTime() << "] ";
-        ((std::cout << "\033[1;32;49m" << std::forward<Args>(args)), ...);
+        std::cout << "[" << getTime() << "]";
+        ((std::cout << "\033[1;32;49m" << " " << std::forward<Args>(args)), ...);
         std::cout << "\033[0m" << std::endl;
     }
 
     template <typename... Args>
     static void info(Args... args) {
-        std::cout << "[" << getTime() << "] ";
-        ((std::cout << "\033[0;34;49m" << std::forward<Args>(args)), ...);
+        std::cout << "[" << getTime() << "]";
+        ((std::cout << "\033[0;34;49m" << " " << std::forward<Args>(args)), ...);
         std::cout << "\033[0m" << std::endl;
     }
 
     template <typename... Args>
     static void debug(Args&&... args) {
-        ((std::cout << std::forward<Args>(args)), ...);
+        ((std::cout << " " << std::forward<Args>(args)), ...);
         std::cout << std::endl;
     }
 
     template <typename... Args>
     static void critical(Args&&... args) {
-        std::cout << "[" << getTime() << "] ";
-        ((std::cout << "\033[1;31;49m" <<  std::forward<Args>(args)), ...);
+        std::cout << "[" << getTime() << "]";
+        ((std::cout << "\033[1;31;49m" <<  " " <<  std::forward<Args>(args)), ...);
         std::cout << "\033[0m" << std::endl;
     }
 };

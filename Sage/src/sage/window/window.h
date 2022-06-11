@@ -4,8 +4,8 @@
 #include <string>
 #include <iostream>
 
-#include "../Events/Event.h"
-#include "../Utils/Logger/Log.h"
+#include "../events/event.h"
+#include "../utils/logger/log.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

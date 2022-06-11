@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "application.h"
 
 namespace Sage {
 
@@ -73,6 +73,12 @@ static unsigned int createShader(const std::string& vertexShader, const std::str
 }
 
 void Application::run() {
+    sage::array<int, 5> arr = {0, 34, 22, 323, 4};
+    sage::array<int, 5>::iterator it = arr.begin() + 3;
+    sage::array<int,5>::riterator ritr = arr.rbegin();
+
+    Log::warning(arr[5 - 2],ritr[1]);
+
     float poss[6] = {
         -0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f,
     };

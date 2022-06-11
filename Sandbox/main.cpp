@@ -1,4 +1,4 @@
-#include "src/Sage.h"
+#include "src/sage.h"
 
 class ExampleLayer : public Sage::Layer {
 public:

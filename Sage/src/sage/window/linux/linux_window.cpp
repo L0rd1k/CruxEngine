@@ -1,4 +1,4 @@
-#include "LinuxWindow.h"
+#include "linux_window.h"
 
 namespace Sage {
 
