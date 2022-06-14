@@ -21,7 +21,9 @@ public:
     reverse_iterator(const iterator_type itr) : _dataPtr(itr) {
     }
 
-    reverse_iterator(const reverse_iterator<iterator_type>& itr) : _dataPtr(itr.base()) {
+    template<typename IterType>
+    reverse_iterator(const reverse_iterator<IterType> itr) : 
+    _dataPtr(itr.base()) {
     }
 
     virtual ~reverse_iterator() {
@@ -70,12 +72,12 @@ public:
     }
 
     reverse_iterator<iterator_type>& operator+=(const int32_t pos) {
-        _dataPtr += pos;
+        _dataPtr -= pos;
         return *this;
     }
 
     reverse_iterator<iterator_type>& operator-=(const int32_t pos) {
-        _dataPtr -= pos;
+        _dataPtr += pos;
         return *this;
     }
 

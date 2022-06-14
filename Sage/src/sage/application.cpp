@@ -1,5 +1,6 @@
 #include "application.h"
-
+#include <array>
+#include <iterator>
 namespace Sage {
 
 Application::Application() {
@@ -73,11 +74,15 @@ static unsigned int createShader(const std::string& vertexShader, const std::str
 }
 
 void Application::run() {
-    sage::array<int, 5> arr = {0, 34, 22, 323, 4};
-    sage::array<int, 5>::iterator it = arr.begin() + 3;
-    sage::array<int,5>::riterator ritr = arr.rbegin();
+ 
+ 
+    sage::array<int, 5> arr = {29, 4, 22, 323, 4};
+    
+    sage::array<int, 5>::iterator itr1 = arr.end();
+    sage::array<int, 5>::iterator itr2 = itr1 + 3;
 
-    Log::warning(arr[5 - 2],ritr[1]);
+    Log::warning(*--itr1, *itr2, itr1 >= itr2, itr2 >= itr1);
+    
 
     float poss[6] = {
         -0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f,

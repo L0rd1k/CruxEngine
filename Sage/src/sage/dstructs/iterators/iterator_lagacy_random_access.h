@@ -1,6 +1,7 @@
 #pragma once
 
 #include <inttypes.h>
+#include <type_traits>
 
 #include "iterator_operations.h"
 
@@ -22,8 +23,9 @@ namespace sage {
  * **/
 template <typename Type>
 class LegacyRandomAccessIterator {
+private:
+    friend class LegacyRandomAccessIterator<const Type>;
 public:
-
     using value_type = Type;
     using reference = Type&;
     using pointer = Type*;
@@ -35,6 +37,12 @@ public:
     }
 
     LegacyRandomAccessIterator(const LegacyRandomAccessIterator& itr) : _dataPtr(itr._dataPtr) {
+    }
+
+    template<typename CType>
+    LegacyRandomAccessIterator(LegacyRandomAccessIterator<CType> itr) {
+        static_assert(std::is_same<Type, const CType>::value);
+        _dataPtr = itr._dataPtr;
     }
 
     virtual ~LegacyRandomAccessIterator() {
@@ -68,6 +76,13 @@ public:
         LegacyRandomAccessIterator<value_type> temp = *this;
         --(*this);
         return temp;
+    }
+
+
+    template<typename CType>
+    LegacyRandomAccessIterator<value_type>& operator=(LegacyRandomAccessIterator<CType> itr) {
+        static_assert(std::is_same<Type, CType>::value);
+        _dataPtr = itr._dataPtr;
     }
 
     LegacyRandomAccessIterator& operator=(const LegacyRandomAccessIterator& itr) {
@@ -143,13 +158,13 @@ bool operator>(LegacyRandomAccessIterator<Type> itr1, LegacyRandomAccessIterator
 }
 
 template <typename Type>
-bool operator<=(LegacyRandomAccessIterator<Type> lhs, LegacyRandomAccessIterator<Type> rhs) {
-    return lhs.operator->() <= rhs.operator->();
+bool operator<=(LegacyRandomAccessIterator<Type> itr1, LegacyRandomAccessIterator<Type> itr2) {
+    return itr1.operator->() <= itr2.operator->();
 }
 
 template <typename Type>
-bool operator>=(LegacyRandomAccessIterator<Type> lhs, LegacyRandomAccessIterator<Type> rhs) {
-    return lhs.operator->() >= rhs.operator->();
+bool operator>=(LegacyRandomAccessIterator<Type> itr1, LegacyRandomAccessIterator<Type> itr2) {
+    return itr1.operator->() >= itr2.operator->();
 }
 
 };  // namespace sage
