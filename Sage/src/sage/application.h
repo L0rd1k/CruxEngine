@@ -11,7 +11,7 @@
 #include <memory>
 
 #include "dstructs/array/array.h"
-
+#include "opengl/shader/shader_utils.h"
 namespace Sage {
 
 class Application {

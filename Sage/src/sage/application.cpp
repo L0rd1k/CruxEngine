@@ -1,6 +1,4 @@
 #include "application.h"
-#include <array>
-#include <iterator>
 namespace Sage {
 
 Application::Application() {
@@ -73,17 +71,8 @@ static unsigned int createShader(const std::string& vertexShader, const std::str
     return program;
 }
 
+
 void Application::run() {
- 
- 
-    sage::array<int, 5> arr = {29, 4, 22, 323, 4};
-    
-    sage::array<int, 5>::iterator itr1 = arr.end();
-    sage::array<int, 5>::iterator itr2 = itr1 + 3;
-
-    Log::warning(*--itr1, *itr2, itr1 >= itr2, itr2 >= itr1);
-    
-
     float poss[6] = {
         -0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f,
     };
@@ -98,28 +87,9 @@ void Application::run() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    std::string vertexShader = 
-        "#version 300 es \n"
-        "\n"
-        "layout(location = 0) in vec4 position;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = position;\n"
-        "}\n";
-
-    std::string fragmentShader = 
-        "#version 300 es \n"
-        "precision mediump float; \n"
-        "\n"
-        "layout(location = 0) out mediump vec4 color;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-        "}\n";
-        
-    unsigned int shader = createShader(vertexShader, fragmentShader);
+    /** @warning remove absolute path **/
+    ShaderData data = parseShader("../../Sage/data/test.shader");
+    unsigned int shader = createShader(data.VertexData, data.FragmentData);
     glUseProgram(shader);
     
 
@@ -131,6 +101,7 @@ void Application::run() {
         }
         _window->onUpdate();
     }
+
     glDeleteProgram(shader);
 
 }
