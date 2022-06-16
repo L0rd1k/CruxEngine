@@ -1,6 +1,6 @@
 #include "layer.h"
 
-namespace Sage {
+namespace sage {
 
 Layer::Layer(const std::string& layerName) : 
 _layerName(layerName) {

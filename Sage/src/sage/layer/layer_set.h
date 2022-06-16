@@ -1,11 +1,11 @@
 #pragma once
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "layer.h"
 
-namespace Sage {
+namespace sage {
 
 class LayerSet {
 public:
@@ -29,4 +29,4 @@ private:
     std::vector<Layer*>::iterator _layerInsert;
 };
 
-}  // namespace Sage
+}  // namespace sage

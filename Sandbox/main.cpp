@@ -1,17 +1,17 @@
 #include "src/sage.h"
 
-class ExampleLayer : public Sage::Layer {
+class ExampleLayer : public sage::Layer {
 public:
 	ExampleLayer() : Layer("Example") {
 	}
 	void onUpdate() override {
 	}
-	void onEvent(Sage::Event& event) override {
-		Sage::Log::debug(getName(), ": ", event.GetName(), " ", event.ToString());
+	void onEvent(sage::Event& event) override {
+		sage::Log::debug(getName(), ": ", event.GetName(), " ", event.ToString());
 	}
 };
 
-class Sandbox : public Sage::Application {
+class Sandbox : public sage::Application {
 public:
     Sandbox() {
         pushLayer(new ExampleLayer());
@@ -20,6 +20,6 @@ public:
     }
 };
 
-Sage::Application* Sage::CreateApplication() {
+sage::Application* sage::CreateApplication() {
     return new Sandbox();
 }

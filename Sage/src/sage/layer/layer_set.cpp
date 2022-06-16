@@ -1,13 +1,13 @@
 #include "layer_set.h"
 
-namespace Sage {
+namespace sage {
 
 LayerSet::LayerSet() {
     _layerInsert = _layers.begin();
 }
 
 LayerSet::~LayerSet() {
-    for(auto layer : _layers) {
+    for (auto layer : _layers) {
         delete layer;
     }
 }
@@ -17,21 +17,21 @@ void LayerSet::pushLayer(Layer* layer) {
 }
 
 void LayerSet::pushOverlay(Layer* overlay) {
-    _layers.emplace_back(overlay);    
+    _layers.emplace_back(overlay);
 }
 
 void LayerSet::popLayer(Layer* layer) {
-	auto it = std::find(_layers.begin(), _layers.end(), layer);
-	if (it != _layers.end()) {
-		_layers.erase(it);
-		_layerInsert--;
-	}
+    auto it = std::find(_layers.begin(), _layers.end(), layer);
+    if (it != _layers.end()) {
+        _layers.erase(it);
+        _layerInsert--;
+    }
 }
 
 void LayerSet::popOverlay(Layer* overlay) {
-	auto it = std::find(_layers.begin(), _layers.end(), overlay);
-	if (it != _layers.end())
-		_layers.erase(it);
+    auto it = std::find(_layers.begin(), _layers.end(), overlay);
+    if (it != _layers.end())
+        _layers.erase(it);
 }
 
-}
+}  // namespace sage

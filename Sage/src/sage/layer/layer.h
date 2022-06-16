@@ -4,7 +4,7 @@
 
 #include "../events/event.h"
 
-namespace Sage {
+namespace sage {
 
 class Layer {
     
@@ -26,4 +26,4 @@ protected:
     std::string _layerName;
 };
 
-}  // namespace Sage
+}  // namespace sage

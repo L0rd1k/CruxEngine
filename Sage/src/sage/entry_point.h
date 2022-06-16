@@ -1,10 +1,10 @@
 #pragma once
 
 
-extern Sage::Application* Sage::CreateApplication();
+extern sage::Application* sage::CreateApplication();
 
 int main(int argc, char** argv) {
-    auto app = Sage::CreateApplication();
+    auto app = sage::CreateApplication();
     app->run();
     delete app;
 }

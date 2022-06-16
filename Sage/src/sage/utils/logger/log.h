@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-namespace Sage {
+namespace sage {
 
 class Log {
 public:
@@ -67,4 +67,4 @@ public:
     }
 };
 
-}  // namespace Sage
+}  // namespace sage

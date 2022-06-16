@@ -9,7 +9,7 @@
 
 #define BIT(x) (1 << x)
 
-namespace Sage {
+namespace sage {
 
 /** @brief Existing event's types **/
 enum class EventTypes {
@@ -94,4 +94,4 @@ inline std::ostream& operator<<(std::ostream& os, const Event& e) {
 }
 
 
-}  // namespace Sage  
+}  // namespace sage  

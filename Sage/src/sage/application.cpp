@@ -1,5 +1,5 @@
 #include "application.h"
-namespace Sage {
+namespace sage {
 
 Application::Application() {
     _window = std::unique_ptr<Window>(Window::create());
@@ -21,9 +21,9 @@ void Application::onApplyEvent(Event& e) {
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
     Log::debug(e.GetName(), " ", e.ToString());
-    for(auto it = _layerSet.end(); it != _layerSet.begin();) {
+    for (auto it = _layerSet.end(); it != _layerSet.begin();) {
         (*--it)->onEvent(e);
-        if(e.isHandled) {
+        if (e.isHandled) {
             break;
         }
     }
@@ -34,76 +34,78 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
     return true;
 }
 
-static unsigned int compileShader(unsigned int type, const std::string& source) {
-    unsigned int id = glCreateShader(type);
-    const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
-
-    int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-    if(result == GL_FALSE)  {
-        int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*)alloca(length * sizeof(char));
-        glGetShaderInfoLog(id, length, &length, message);
-        Log::error("Compilation error: ", (type == GL_VERTEX_SHADER ? "vertex " : "fragment "));
-        Log::error(message);
-        glDeleteShader(id);
-        return 0;
-    }
-    return id;
-}
-
-static unsigned int createShader(const std::string& vertexShader, const std::string& fragmentShader) {
-    unsigned int program = glCreateProgram();
-    unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glValidateProgram(program);
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    return program;
-}
-
-
 void Application::run() {
-    float poss[6] = {
-        -0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f,
+    sage::vector<int> vec(5, 10);
+    std::cout << vec[0] << std::endl;
+    float posSquare[] = {
+        -0.5f, -0.5f,  // 0
+        0.5f, -0.5f,   // 1
+        0.5f, 0.5f,    // 2
+        -0.5f, 0.5f,   // 3
     };
 
-    //> Vertex buffer - Pass data to OpenGL
+    unsigned int indices[] = {
+        0,
+        1,
+        2,
+        2,
+        3,
+        0,
+    };
+
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    //> Vertex buffer - Pass data to OpenGL2,
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), poss, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), posSquare, GL_STATIC_DRAW);
 
+    // Links vertex buffer with vao
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    //> Index buffer
+    unsigned int idx_buffer;
+    glGenBuffers(1, &idx_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     /** @warning remove absolute path **/
     ShaderData data = parseShader("../../Sage/data/test.shader");
     unsigned int shader = createShader(data.VertexData, data.FragmentData);
     glUseProgram(shader);
-    
+    int location = glGetUniformLocation(shader, "u_color");
+    assert(location != -1);
+    glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0f);
 
-    while(_isRunning) {
+    //> Unbinding
+    glBindVertexArray(0);
+    glUseProgram(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    while (_isRunning) {
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        for(Layer* layer : _layerSet) {
+
+        //> Binding
+        glUseProgram(shader);
+        glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0f);
+
+        glBindVertexArray(vao);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer);
+
+        // glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        for (Layer* layer : _layerSet) {
             layer->onUpdate();
         }
         _window->onUpdate();
     }
 
     glDeleteProgram(shader);
-
 }
 
-}
+}  // namespace sage

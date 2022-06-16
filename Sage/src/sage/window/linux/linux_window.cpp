@@ -1,6 +1,6 @@
 #include "linux_window.h"
 
-namespace Sage {
+namespace sage {
 
 static bool _isGlfwInitialized = false;
 static void GLFWErrorCallback(int error, const char* msg) {
@@ -126,4 +126,4 @@ bool LinuxWindow::isVSunc() const {
     return _data.isVSync;
 }
 
-}  // namespace Sage
+}  // namespace sage

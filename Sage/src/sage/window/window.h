@@ -10,7 +10,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-namespace Sage {
+namespace sage {
 
 struct WindowConf {
     WindowConf(const std::string& title = "SageEngine", 
@@ -37,4 +37,4 @@ public:
     static Window* create(const WindowConf& conf = WindowConf());
 };
 
-}  // namespace Sage
+}  // namespace sage

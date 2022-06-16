@@ -10,9 +10,15 @@
 #include <iostream>
 #include <memory>
 
+#include <vector>
+#include <algorithm>
+
 #include "dstructs/array/array.h"
+#include "dstructs/vector/vector.h"
+#include "dstructs/allocator/allocator.h"
+
 #include "opengl/shader/shader_utils.h"
-namespace Sage {
+namespace sage {
 
 class Application {
    public:
@@ -32,4 +38,4 @@ private:
 
 Application* CreateApplication();
 
-}  // namespace Sage
+}  // namespace sage
