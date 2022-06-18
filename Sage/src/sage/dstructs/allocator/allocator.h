@@ -17,17 +17,17 @@ public:
     using difference_type = ptrdiff_t;
 
     /** @brief Creates a new allocator instance. **/
-    allocator() = default;
+    allocator() throw() {};
 
     /** @brief Creates a new allocator instance. **/
-    allocator(const allocator&) {}
+    allocator(const allocator&) noexcept {}
 
     /** @brief Creates a new allocator instance. **/
-    template <class U>
-    allocator(const allocator<U>&) {}
+    template <typename U>
+    allocator(const allocator<U>&) noexcept {}
 
     /** @brief Destructs an allocator instance. **/
-    ~allocator() {}
+    ~allocator() throw() {}
 
     /** @brief Assignment operator. **/
     allocator<Type>& operator=(const allocator&) {
@@ -41,11 +41,11 @@ public:
     }
 
     /** @brief Public Member Functions **/
-    pointer address(reference x) const {
+    pointer address(reference x) const noexcept {
         return &x;
     }
 
-    const_pointer address(const_reference x) const {
+    const_pointer address(const_reference x) const noexcept{
         return &x;
     }
 
@@ -61,10 +61,10 @@ public:
 
     /** @brief Allocates uninitialized storage. **/
     [[nodiscard]] pointer allocate(size_type n) {
-        if(n > std::numeric_limits<size_type>::max() / sizeof(Type)) {
+        if (n > std::numeric_limits<size_type>::max() / sizeof(Type)) {
             throw std::bad_array_new_length();
         }
-        if(auto ptr = static_cast<pointer>(std::malloc(n*sizeof(Type)))){
+        if (auto ptr = static_cast<pointer>(std::malloc(n * sizeof(Type)))) {
             report(ptr, n);
             return ptr;
         }
@@ -84,9 +84,9 @@ public:
         return size_t(-1);
     }
 
-    template <class U>
-    struct rebind {
-        typedef allocator<U> other;
+    template <typename U>
+    struct rebind { 
+        using other = allocator<U>; 
     };
 
 private:

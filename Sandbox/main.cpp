@@ -7,7 +7,7 @@ public:
 	void onUpdate() override {
 	}
 	void onEvent(sage::Event& event) override {
-		sage::Log::debug(getName(), ": ", event.GetName(), " ", event.ToString());
+		// sage::Log::debug(getName(), ": ", event.GetName(), " ", event.ToString());
 	}
 };
 

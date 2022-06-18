@@ -20,7 +20,7 @@ void Application::pushOverlay(Layer* layer) {
 void Application::onApplyEvent(Event& e) {
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
-    Log::debug(e.GetName(), " ", e.ToString());
+    // Log::debug(e.GetName(), e.ToString());
     for (auto it = _layerSet.end(); it != _layerSet.begin();) {
         (*--it)->onEvent(e);
         if (e.isHandled) {
@@ -35,8 +35,17 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
-    sage::vector<int> vec(5, 10);
-    std::cout << vec[0] << std::endl;
+    sage::vector<int> vec(10, 3);
+    Log::info(vec.capacity(), vec.size(), vec[2]);
+
+    sage::vector<int> vec2(vec);
+    Log::info(vec2.capacity(), vec2.size(), vec2[2]);
+    
+    sage::vector<int> vec3;
+    vec3 = vec;
+    Log::info(vec3.capacity(), vec3.size());
+
+
     float posSquare[] = {
         -0.5f, -0.5f,  // 0
         0.5f, -0.5f,   // 1
@@ -45,12 +54,7 @@ void Application::run() {
     };
 
     unsigned int indices[] = {
-        0,
-        1,
-        2,
-        2,
-        3,
-        0,
+        0, 1, 2, 2, 3, 0,
     };
 
     unsigned int vao;
