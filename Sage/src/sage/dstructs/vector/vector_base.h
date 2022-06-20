@@ -23,31 +23,45 @@ public:
     using reverse_iterator = sage::reverse_iterator<iterator>;
     using const_reverse_iterator = sage::reverse_iterator<const_iterator>;
 
-    vector_base(const allocator_type& alloc) : _alloc(alloc) {
-        this->_start = _alloc.allocate(0);
-        this->_finish = _start;
-        this->_storage_end =_start;
+    vector_base()
+        : _alloc() {
     }
 
-    /** @brief Constructor. **/
-    vector_base(const allocator_type& alloc, size_type n) : _alloc(alloc) {
-        this->_start = _alloc.allocate(n);
-        this->_finish = _start + n;
-        this->_storage_end =_start + n;
+    vector_base(const allocator_type& alloc)
+        : _alloc(alloc) {
     }
+
+    vector_base(size_type n) : _alloc() {
+        this->_start = this->_alloc.allocate(n);
+        this->_finish = this->_start;
+        this->_storage_end = this->_start + n;
+    }
+
+    vector_base(size_type n, const allocator_type& alloc)
+        : _alloc(alloc) {
+        this->_start = this->_alloc.allocate(n);
+        this->_finish = this->_start;
+        this->_storage_end = this->_start + n;
+    }
+
+    /** @brief Move operator. **/
+    vector_base(vector_base&& a)
+        : _alloc(a._alloc),
+          _start(a._start),
+          _finish(a._finish),
+          _storage_end(a._storage_end) {
+        a._start = a._finish = a._storage_end = nullptr;  //> Clear ownership of any memory.
+    }
+
+
+
+
+
+
 
     /** @brief Destructor. **/
     ~vector_base() {
         _alloc.deallocate(_start, _storage_end - _start);
-
-    }
-
-    /** @brief Move operator. **/
-    vector_base(vector_base&& a) : _alloc(a._alloc),
-                                   _start(a._start),
-                                   _finish(a._finish),
-                                   _storage_end(a._storage_end) {
-        a._start = a._finish = a._storage_end = nullptr;  //> Clear ownership of any memory.
     }
 
     /** @brief Move assignment operator. **/

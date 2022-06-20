@@ -30,7 +30,7 @@ public:
     using reference = Type&;
     using pointer = Type*;
     using difference_type = std::ptrdiff_t;  
-    using iterator_category = std::output_iterator_tag;
+    using iterator_category = std::random_access_iterator_tag;
 
     LegacyRandomAccessIterator() : _dataPtr(nullptr) {
     }
@@ -114,6 +114,10 @@ public:
 
     bool operator!=(const LegacyRandomAccessIterator& itr) const {
         return _dataPtr != itr._dataPtr;
+    }
+
+    pointer base() const {
+        return _dataPtr;
     }
 
 private:

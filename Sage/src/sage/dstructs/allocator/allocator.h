@@ -51,7 +51,8 @@ public:
 
     /** @brief Constructs an object in allocated storage. **/
     void construct(pointer p, const Type& val) {
-        new ((Type*)p) Type(val);
+        ::new((Type*)p) Type(val);
+        // std::cout << "Alloc::construct: " << p << " " << val << std::endl;
     }
 
     /** @brief Destructs an object in allocated storage. **/

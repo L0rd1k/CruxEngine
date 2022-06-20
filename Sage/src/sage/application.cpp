@@ -35,15 +35,11 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
-    sage::vector<int> vec(10, 3);
-    Log::info(vec.capacity(), vec.size(), vec[2]);
+    sage::vector<int> vec4;
+    Log::info(vec4.capacity(), vec4.size());
 
-    sage::vector<int> vec2(vec);
-    Log::info(vec2.capacity(), vec2.size(), vec2[2]);
-    
-    sage::vector<int> vec3;
-    vec3 = vec;
-    Log::info(vec3.capacity(), vec3.size());
+    sage::vector<int> vec5{1,2,3,4};
+    Log::info(vec5.capacity(), vec5.size());
 
 
     float posSquare[] = {
