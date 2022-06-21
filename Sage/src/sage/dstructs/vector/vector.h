@@ -11,10 +11,12 @@
 namespace sage {
 
 /** @brief Dynamic array
- *   (constructor)
- *   (destructor)
- *   operator=
- *   assign
+ *   + (constructor)
+ *   + (destructor)
+ *   +/- operator=
+ *
+ *   +/- assign
+ *
  *   + get_allocator
  *   + at
  *   + operator[]
@@ -34,15 +36,15 @@ namespace sage {
  *   + max_size
  *   + reserve
  *   + capacity
- *   shrink_to_fit
+ *   + shrink_to_fit
  *   + clear
  *   insert
- *   emplace
- *   erase
- *   push_back
- *   emplace_back
- *   pop_back
- *   resize
+ *   + emplace
+ *   + erase
+ *   + push_back
+ *   + emplace_back
+ *   + pop_back
+ *   + resize
  *   + swap
  **/
 template <typename Type, typename Allocator = sage::allocator<Type>>
@@ -69,8 +71,7 @@ public:
     }
 
     /** @brief Construct vector without elements.
-     * @param alloc Custom allocator object.
-     **/
+     * @param alloc Custom allocator object. **/
     explicit vector(const allocator_type& alloc)
         : VecBase(alloc) {
     }
@@ -146,6 +147,12 @@ public:
         this->swap(*this, vec);
     }
 
+    /** @brief Assign value to vector. **/
+    void assign(size_type n, const_reference val) {
+        std::cout << "Vector::assign";
+        this->fill_assign(n, val);
+    }
+
     /** @brief Swap data between two vectors. **/
     void swap(vector& vec) {
         std::swap(this->_start, vec._start);
@@ -155,74 +162,188 @@ public:
         std::__alloc_swap<allocator_type>::_S_do_it(this->_alloc, vec._alloc);
     }
 
-    // reference operator[](size_type n) {
-    //     return *(this->_start + n);
+    // template <typename InputIterator>
+    // void assign(InputIterator first, InputIterator last) {
     // }
 
-    // const_reference operator[](size_type n) const {
-    //     return *(this->_start + n);
-    // }
+    /** @brief  Inserts given value into %vector before specified iterator. **/
+    iterator insert(iterator pos, const_reference x) {
+        const size_type n = pos - this->begin();
+        if(this->_finish != this->_storage_end && pos == this->end()) {
+            this->get_allocator().construct(this->_finish, x);
+            ++this->_finish;
+        } else {
+            if(this->_finish != this->_storage_end) {
+                Type x_copy = x;
+                this->insert_aux(pos, std::move(x_copy));
+            } else {
+                this->insert_aux(pos, x);
+            }
+        }
+        return iterator(this->_start + n);
+    }
 
-    // reference at(size_type n) {
-    //     if (n >= this->size()) {
-    //         std::__throw_out_of_range(__N("sage::vector: Pos out of range."));
-    //     }
-    //     return (*this)[n];
-    // }
+    /** @brief  Inserts given value into %vector before specified iterator. **/
+    iterator insert(iterator pos, value_type&& x) {
+        return emplace(pos, std::move(x));
+    }
 
-    // const_reference at(size_type n) const {
-    //     if (n >= this->size()) {
-    //         std::__throw_out_of_range(__N("sage::vector: Pos out of range."));
-    //     }
-    //     return (*this)[n];
-    // }
+    /** @brief Access to the data in the vector. **/
+    reference operator[](size_type n) {
+        return *(this->_start + n);
+    }
 
-    // void reserve(size_type n) {
-    //     if (n > this->max_size()) {
-    //         std::__throw_length_error(__N("sage::vector: Reserve"));
-    //     }
-    //     if (n > this->capacity()) {
-    //         const size_type old_size = size();
-    //         pointer temp = allocate_and_copy(n, this->_start, this->_finish);
-    //         std::_Destroy(this->_start, this->_finish, this->_alloc);
-    //         this->_alloc.deallocate(this->_start, this->_storage_end - this->_start);
-    //         this->_start = temp;
-    //         this->_finish = temp + old_size;
-    //         this->_storage_end = this->_start + n;
-    //     }
-    // }
+    /** @brief Access to the data in the vector. **/
+    const_reference operator[](size_type n) const {
+        return *(this->_start + n);
+    }
 
-    // void push_back(const value_type& x) {
-    //     if (this->_finish != this->_storage_end) {
-    //         this->_alloc.construct(this->_finish, x);
-    //         ++this->_finish;
-    //     } else {
-    //         insert_aux(end(), x);
-    //     }
-    // }
+    /** @brief Safe way to get data object by index. **/
+    reference at(size_type n) {
+        if (n >= this->size()) {
+            std::__throw_out_of_range(__N("sage::vector: Pos out of range."));
+        }
+        return (*this)[n];
+    }
 
-    // pointer data() {
-    //     return front();
-    // }
+    /** @brief Safe way to get data object by index. **/
+    const_reference at(size_type n) const {
+        if (n >= this->size()) {
+            std::__throw_out_of_range(__N("sage::vector: Pos out of range."));
+        }
+        return (*this)[n];
+    }
 
-    // const_pointer data() const {
-    //     return front();
-    // }
+    /** @brief Increase vector capacity. **/
+    void reserve(size_type n) {
+        if (n > this->max_size()) {
+            std::__throw_length_error(__N("sage::vector: Reserve"));
+        }
+        if (n > this->capacity()) {
+            const size_type old_size = this->size();
+            pointer temp = this->allocate_and_copy(n, std::make_move_iterator(this->_start),
+                                                   std::make_move_iterator(this->_finish));
+            std::_Destroy(this->_start, this->_finish, this->_alloc);
+            this->_alloc.deallocate(this->_start, this->_storage_end - this->_start);
+            this->_start = temp;
+            this->_finish = temp + old_size;
+            this->_storage_end = this->_start + n;
+        }
+    }
+
+    /** @brief Add data to the end if the vector. **/
+    void push_back(const_reference x) {
+        if (this->_finish != this->_storage_end) {
+            this->get_allocator().construct(this->_finish, x);
+            ++this->_finish;
+        } else {
+            this->insert_aux(end(), x);
+        }
+    }
+
+    /** @brief Add data to the end if the vector. **/
+    void push_back(value_type&& x) {
+        emplace_back(std::move(x));
+    }
+
+    /** @brief Remove last element from vector. **/
+    void pop_back() {
+        --(this->_finish);
+        this->_alloc.destroy(this->_finish);
+    }
+
+    /** @brief Insert data in vector on spcific position. **/
+    template <typename... Args>
+    iterator emplace(iterator pos, Args&&... args) {
+        const size_type n = pos - this->begin();
+        if (this->_finish != this->_storage_end && pos == this->end()) {
+            this->get_allocator().construct(this->_finish, std::forward<Args>(args)...);
+            ++this->_finish;
+        } else {
+            this->insert_aux(pos, std::forward<Args>(args)...);
+            return iterator(this->_start + n);
+        }
+    }
+
+    /** @brief Appends a new element to the end of the container. **/
+    template <typename... Args>
+    void emplace_back(Args&&... args) {
+        if (this->_finish != this->_storage_end) {
+            this->get_allocator().construct(this->_finish, std::forward<Args>(args)...);
+            ++(this->_finish);
+        } else {
+            insert_aux(this->end(), std::forward<Args>(args)...);
+        }
+    }
+
+    /** @brief Remove element at the given position. **/
+    iterator erase(iterator pos) {
+        if (pos + 1 != this->end()) {
+            std::move(pos + 1, this->end(), pos);
+        }
+        --this->_finish;
+        this->get_allocator().destroy(this->_finish);
+        return pos;
+    }
+
+    /** @brief Remove elements at the given range. **/
+    iterator erase(iterator first, iterator last) {
+        if (first != last) {
+            if (last != this->end()) {
+                std::move(last, this->end(), first);
+            }
+            pointer pos = first.base() + (this->end() - last);
+            std::_Destroy(pos, this->_finish, this->_alloc);
+            this->_finish = pos;
+        }
+        return first;
+    }
+
+    /** @brief Get pointer of first vector element. **/
+    pointer data() {
+        return front();
+    }
+
+    /** @brief Get const pointer of first vector element. **/
+    const_pointer data() const {
+        return front();
+    }
 
     /** @brief Returns the number of elements that can be held in currently allocated storage. **/
     size_type capacity() const {
         return size_type(this->_storage_end - this->_start);
     }
 
-    /** @brief Returns the number of elements. **/
+    /** @brief Returns the number of elements.
+     * @brief Current vector size. **/
     size_type size() const {
         return size_type(this->_finish - this->_start);
     }
 
+    /** @brief Return max possible size of vector.
+     * @return Max vector size. **/
     size_type max_size() const {
         return this->get_allocator().max_size();
     }
 
+    /** @brief Resize vector to specific size.
+     * @param[in] n Number of elements to resize. **/
+    void resize(size_type n) {
+        if (n > this->size()) {
+            this->default_append(n - this->size());
+        } else if (n < this->size()) {
+            pointer pos = this->_start + n;
+            std::_Destroy(pos, this->_finish, this->_alloc);
+            this->_finish = pos;
+        }
+    }
+
+    /** @brief Equate capacity() to size(). **/
+    void shrink_to_fit() {
+        sage::_shrink_to_fit<vector>::do_shrink(*this);
+    }
+
+    /** @brief Check if vector is + . **/
     bool empty() const {
         return begin() == end();
     }
@@ -247,18 +368,42 @@ public:
         return const_iterator(this->_finish);
     }
 
+    /** @brief Returns reverse iterator to the begin. **/
     reverse_iterator rbegin() {
         return reverse_iterator(end());
     }
 
-    const_reverse_iterator crbegin() const {
+    /** @brief Returns a const reverse iterator to the begin. **/
+    const_reverse_iterator rbegin() const {
         return const_reverse_iterator(end());
     }
 
+    /** @brief Returns reverse iterator to the end. **/
     reverse_iterator rend() {
         return reverse_iterator(begin());
     }
 
+    /** @brief Returns a const reverse iterator to the end. **/
+    const_reverse_iterator rend() const {
+        return const_reverse_iterator(begin());
+    }
+
+    /** @brief Returns a const iterator to the start **/
+    const_iterator cbegin() const {
+        return const_iterator(this->_start);
+    }
+
+    /** @brief Returns a const iterator to the end **/
+    const_iterator cend() const {
+        return const_iterator(this->_finish);
+    }
+
+    /** @brief Returns a const reverse iterator to the begin. **/
+    const_reverse_iterator crbegin() const {
+        return const_reverse_iterator(end());
+    }
+
+    /** @brief Returns a const reverse iterator to the end. **/
     const_reverse_iterator crend() const {
         return const_reverse_iterator(begin());
     }
@@ -269,23 +414,27 @@ public:
         this->_finish = this->_start;
     }
 
+    /** @brief Get reference to the first element of vector. **/
     reference front() {
         return *begin();
     }
 
+    /** @brief Get const reference to the first element of vector. **/
     const_reference front() const {
         return *begin();
     }
 
+    /** @brief Get reference to the last element of vector. **/
     reference back() {
         return *(end() - 1);
     }
 
+    /** @brief Get const reference to the last element of vector. **/
     const_reference back() const {
         return *(end() - 1);
     }
 
-protected:
+private:
     template <typename ForwardIterator>
     void initialize_range(ForwardIterator first, ForwardIterator last, std::forward_iterator_tag) {
         const size_type n = sage::distance(first, last);
@@ -300,68 +449,122 @@ protected:
         this->initialize_range(first, last, iter_category());
     }
 
+    template <typename InputIterator>
+    void assign_aux(InputIterator first, InputIterator last) {
+        pointer current(this->_start);
+        for (; first != last && current != this->_finish; ++current, ++first) {
+            *current = *first;
+        }
+        if (first == last) {
+            std::_Destroy(current, this->_finish, this->_alloc);
+            this->_finish = current;
+        } else {
+            this->insert(end(), first, last);
+        }
+    }
 
-    //     template <typename ForwardIterator>
-    //     pointer allocate_and_copy(size_type n, ForwardIterator first, ForwardIterator last) {
-    //         pointer result = this->_alloc.allocate(n);
-    //         try {
-    //             uninitialized_copy_a(first, last, result, this->_alloc);
-    //             return result;
-    //         } catch (...) {
-    //             this->_alloc.deallocate(result, n);
-    //             __throw_exception_again;
-    //         }
-    //     }
+    template <typename... Args>
+    void insert_aux(iterator pos, Args&&... args) {
+        if (this->_finish != this->_storage_end) {
+            this->get_allocator().construct(this->_finish, std::move(*(this->_finish - 1)));
+            ++this->_finish;
+            std::move_backward(pos.base(), this->_finish - 2, this->_finish - 1);
+            *pos = Type(std::forward<Args>(args)...);
+        } else {
+            size_type lens;
+            if (this->max_size() - this->size() < size_type(1)) {
+                std::__throw_length_error(__N("sage::vector insert_aux"));
+            }
+            const size_type len = this->size() + std::max(this->size(), size_type(1));
+            lens = (len < this->size() || len > max_size()) ? this->max_size() : len;
 
-    //     size_type check_length(size_type n, const char* msg) const {
-    //         if (max_size() - size() < n) {
-    //             std::__throw_length_error(__N(msg));
-    //         }
-    //         const size_type len = size() + std::max(size(), n);
-    //         return (len < size() || len > max_size()) ? max_size() : len;
-    //     }
+            const size_type elem_before = pos - this->begin();
+            pointer n_start(this->get_allocator().allocate(lens));
+            pointer n_finish(n_start);
+            try {
+                this->get_allocator().construct(n_start + elem_before,
+                                                std::forward<Args>(args)...);
+                n_finish = 0;
+                n_finish = sage::uninitialized_move(this->_start, pos.base(), n_start, this->_alloc);
+                ++n_finish;
+                n_finish = sage::uninitialized_move(pos.base(), this->_finish, n_finish, this->_alloc);
+            } catch (...) {
+                if (!n_finish) {
+                    this->get_allocator().destroy(n_start + elem_before);
+                } else {
+                    std::_Destroy(n_start, n_finish, this->_alloc);
+                }
+                this->get_allocator().deallocate(n_start, lens);
+                __throw_exception_again;
+            }
+            std::_Destroy(this->_start, this->_finish, this->_alloc);
+            this->get_allocator().deallocate(this->_start, this->_storage_end - this->_start);
+            this->_start = n_start;
+            this->_finish = n_finish;
+            this->_storage_end = n_start + lens;
+        }
+    }
 
-    //     void insert_aux(iterator pos, const value_type& x) {
-    //         if (this->_finish != this->_storage_end) {
-    //             std::cout << "Finish != StorageEnd" << std::endl;
-    //             this->_alloc.construct(this->_finish, *(this->_finish - 1));
-    //             ++this->_finish;
-    //             value_type x_copy = x;
-    //             std::move_backward(pos.base(), this->_finish - 2, this->_finish - 1);
-    //             *pos = x_copy;
-    //         } else {
-    //             const size_type len = check_length(size_type(1), "sage::vector: insert_aux");
-    //             std::cout << "Length: " << len << std::endl;
-    //             const size_type prev_elements = pos - begin();
-    //             std::cout << "Prev Element: " << prev_elements << std::endl;
-    //             pointer new_start(this->get_allocator().allocate(len));
-    //             pointer new_finish(new_start);
-    //             std::cout << new_start << " " << new_finish << std::endl;
+    vector fill_assign(size_type size, const_reference val) {
+        if (size > this->capacity()) {
+            vector temp(size, val, this->_alloc);
+            temp.swap(*this);
+        } else if (size > this->size()) {
+            std::fill(begin(), end(), val);
+            sage::uninitialized_fill(this->_finish, size - this->size(), val, this->_alloc);
+            this->_finish += size - this->size();
+        } else {
+            pointer pos = std::fill_n(this->_finish, size, val);
+            std::_Destroy(pos, this->_finish, this->_alloc);
+            this->_finish = pos;
+        }
+    }
 
-    //             try {
-    //                 this->get_allocator().construct(new_start + prev_elements, x);
-    //                 std::cout << (new_start + prev_elements) << " " << &*begin() << " " << &*(this->begin()) << std::endl;
+    void default_append(size_type n) {
+        if (n != 0) {
+            if (size_type(this->_storage_end - this->_finish) >= n) {
+                sage::uninitialized_default(this->_finish, n, this->_alloc);
+                this->_finish += n;
+            } else {
+                size_type lens = 0;
+                if (this->max_size() - this->size() < n) {
+                    std::__throw_length_error(__N("sage::vector default_append"));
+                }
+                const size_type len = this->size() + std::max(this->size(), n);
+                lens = (len < this->size() || len > this->max_size()) ? this->max_size() : len;
+                const size_type old_size = this->size();
+                pointer n_start(this->get_allocator().allocate(lens));
+                pointer n_finish(n_start);
+                try {
+                    n_finish = sage::uninitialized_move(this->_start, this->_finish, n_start, this->_alloc);
+                    std::cout << *n_finish << std::endl;
+                    sage::uninitialized_default(n_finish, n, this->_alloc);
+                    n_finish += n;
+                } catch (...) {
+                    std::_Destroy(n_start, n_finish, this->_alloc);
+                    this->get_allocator().deallocate(n_start, lens);
+                    __throw_exception_again;
+                }
+                std::_Destroy(this->_start, this->_finish, this->_alloc);
+                this->get_allocator().deallocate(this->_start, this->_storage_end - this->_start);
+                this->_start = n_start;
+                this->_finish = n_finish;
+                this->_storage_end = n_start + lens;
+            }
+        }
+    }
 
-    //                 new_finish = 0;
-    //                 new_finish = sage::uninitialized_move_a(this->_start, pos.base(), new_start, this->_alloc);
-    //                 ++new_finish;
-    //                 new_finish = sage::uninitialized_move_a(pos.base(), this->_finish, new_finish, this->_alloc);
-    //             } catch (...) {
-    //                 if (!new_finish) {
-    //                     this->_alloc.destroy(new_start + prev_elements);
-    //                 } else {
-    //                     std::_Destroy(new_start, new_finish, this->_alloc);
-    //                     this->_alloc.deallocate(new_start, len);
-    //                     __throw_exception_again;
-    //                 }
-    //                 std::_Destroy(this->_start, this->_finish, this->_alloc);
-    //                 this->_alloc.deallocate(this->_start, this->_storage_end - this->_start);
-    //                 this->_start = new_start;
-    //                 this->_finish = new_finish;
-    //                 this->_storage_end = new_start + len;
-    //             }
-    //         }
-    //     }
+    template <typename ForwardIterator>
+    pointer allocate_and_copy(size_type n, ForwardIterator first, ForwardIterator last) {
+        pointer result = this->_alloc.allocate(n);
+        try {
+            sage::uninitialized_copy(first, last, result, this->_alloc);
+            return result;
+        } catch (...) {
+            this->get_allocator().deallocate(result, n);
+            __throw_exception_again;
+        }
+    }
 };
 
 template <typename T, typename Alloc>
@@ -369,23 +572,21 @@ inline void swap(sage::vector<T, Alloc>& x, sage::vector<T, Alloc>& y) {
     x.swap(y);
 }
 
-// template <class T>
-// bool operator!=(const vector<T>& lhs, const vector<T>& rhs) {
-//     return !(lhs == rhs);
-// }
+template <class T>
+bool operator!=(const vector<T>& lhs, const vector<T>& rhs) {
+    return !(lhs == rhs);
+}
 
-// template <class T>
-// bool operator==(const vector<T>& lhs, const vector<T>& rhs) {
-//     if (lhs.size() != rhs.size()) {
-//         return false;
-//     }
-//     for (size_t i = 0; i < lhs.size(); ++i) {
-//         if (lhs[i] != rhs[i]) {
-//             return false;
-//         }
-//     }
-//     return true;
-
-// }
+template <class T>
+bool operator==(const vector<T>& lhs, const vector<T>& rhs) {
+    if (lhs.size() != rhs.size())
+        return false;
+    for (size_t i = 0; i < lhs.size(); ++i) {
+        if (lhs[i] != rhs[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
 }  // namespace sage

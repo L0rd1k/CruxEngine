@@ -35,11 +35,60 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
-    sage::vector<int> vec4;
+    std::cout << std::endl << "------NEW----------" << std::endl;
+    sage::vector<int> vec4 = {12, 23, 343 ,53 ,12};
     Log::info(vec4.capacity(), vec4.size());
+    for(auto itr = vec4.begin(); itr != vec4.end(); ++itr) {
+        std::cout << *itr << " ";
+    }
+    std::cout << std::endl;
+    vec4.resize(8);
+    Log::info(vec4.capacity(), vec4.size());
+    for(auto itr = vec4.begin(); itr != vec4.end(); ++itr) {
+        std::cout << *itr << " ";
+    }
+    std::cout << std::endl << "----------------" << std::endl;
+    vec4.shrink_to_fit();
+    Log::info(vec4.capacity(), vec4.size());
+    vec4.reserve(10);
+    Log::info(vec4.capacity(), vec4.size());
+    vec4.push_back(111);
+    vec4.push_back(112);
+    vec4.push_back(113);
 
-    sage::vector<int> vec5{1,2,3,4};
-    Log::info(vec5.capacity(), vec5.size());
+    Log::info(vec4.capacity(), vec4.size());
+    for(auto itr = vec4.begin(); itr != vec4.end(); ++itr) {
+        std::cout << *itr << " ";
+    }
+    std::cout << std::endl << "----------------" << std::endl;
+    vec4.pop_back();
+    vec4.pop_back();
+    vec4.pop_back();
+    vec4.pop_back();
+    vec4.pop_back();
+    Log::info(vec4.capacity(), vec4.size());
+    for(auto itr = vec4.begin(); itr != vec4.end(); ++itr) {
+        std::cout << *itr << " ";
+    }
+    std::cout << std::endl << "----------------" << std::endl;
+    
+    auto itr1 = vec4.begin();
+    auto itr2 = vec4.begin() + 4;
+    vec4.erase(itr1, itr2);
+    Log::info(vec4.capacity(), vec4.size());
+    for(auto itr = vec4.begin(); itr != vec4.end(); ++itr) {
+        std::cout << *itr << " ";
+    }
+    std::cout << std::endl << "----------------" << std::endl;
+    auto it = vec4.begin() + 1;
+    vec4.emplace(it, 65);
+    vec4.emplace_back(1111);
+    vec4.insert(vec4.begin() + 1, 23112);
+    Log::info(vec4.capacity(), vec4.size());
+    for(auto itr = vec4.begin(); itr != vec4.end(); ++itr) {
+        std::cout << *itr << " ";
+    }
+    std::cout << std::endl << "----------------" << std::endl;
 
 
     float posSquare[] = {

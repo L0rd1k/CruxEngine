@@ -17,7 +17,7 @@ public:
     using difference_type = ptrdiff_t;
 
     /** @brief Creates a new allocator instance. **/
-    allocator() throw() {};
+    allocator() throw(){};
 
     /** @brief Creates a new allocator instance. **/
     allocator(const allocator&) noexcept {}
@@ -45,14 +45,19 @@ public:
         return &x;
     }
 
-    const_pointer address(const_reference x) const noexcept{
+    const_pointer address(const_reference x) const noexcept {
         return &x;
     }
 
     /** @brief Constructs an object in allocated storage. **/
     void construct(pointer p, const Type& val) {
-        ::new((Type*)p) Type(val);
-        // std::cout << "Alloc::construct: " << p << " " << val << std::endl;
+        ::new ((Type*)p) Type(val);
+    }
+
+    /** @brief Constructs an objects in allocated storage. **/
+    template<typename ... Args>
+    void construct(pointer p, Args&&... args) {
+        ::new((Type*)p) Type(std::forward<Args>(args)...); 
     }
 
     /** @brief Destructs an object in allocated storage. **/
@@ -86,8 +91,8 @@ public:
     }
 
     template <typename U>
-    struct rebind { 
-        using other = allocator<U>; 
+    struct rebind {
+        using other = allocator<U>;
     };
 
 private:
@@ -107,5 +112,20 @@ template <typename T, typename U>
 constexpr bool operator!=(const allocator<T>&, const allocator<U>&) noexcept {
     return false;
 }
+
+template <typename T, bool = true>
+struct _shrink_to_fit {
+    static void do_shrink(T&) {}
+};
+
+template <typename T>
+struct _shrink_to_fit<T, true> {
+    static void do_shrink(T& t) {
+        try {
+            T(t).swap(t);
+        } catch (...) {
+        }
+    }
+};
 
 }  // namespace sage

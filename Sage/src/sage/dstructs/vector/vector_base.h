@@ -53,12 +53,6 @@ public:
         a._start = a._finish = a._storage_end = nullptr;  //> Clear ownership of any memory.
     }
 
-
-
-
-
-
-
     /** @brief Destructor. **/
     ~vector_base() {
         _alloc.deallocate(_start, _storage_end - _start);
