@@ -71,7 +71,7 @@ public:
             throw std::bad_array_new_length();
         }
         if (auto ptr = static_cast<pointer>(std::malloc(n * sizeof(Type)))) {
-            report(ptr, n);
+            // report(ptr, n);
             return ptr;
         }
         throw std::bad_alloc();
@@ -80,7 +80,7 @@ public:
     /** @brief Deallocates storage. **/
     void deallocate(Type* ptr, size_type n) noexcept {
         if (ptr) {
-            report(ptr, n, 0);
+            // report(ptr, n, 0);
             free(ptr);
         }
     }
@@ -112,6 +112,21 @@ template <typename T, typename U>
 constexpr bool operator!=(const allocator<T>&, const allocator<U>&) noexcept {
     return false;
 }
+
+
+template <typename Alloc, bool = true>
+struct _alloc_swap {
+    static void do_swap(Alloc&, Alloc&) {}
+};
+
+template <typename Alloc>
+struct _alloc_swap<Alloc, false> {
+    static void do_swap(Alloc& one, Alloc& two) {
+        if(one != two) {
+            swap(one, two);
+        }
+    }
+};
 
 template <typename T, bool = true>
 struct _shrink_to_fit {

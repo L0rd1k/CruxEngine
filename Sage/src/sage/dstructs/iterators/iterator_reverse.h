@@ -14,6 +14,7 @@ public:
     using value_type = typename Iter::value_type;
     using reference = typename Iter::value_type&;
     using pointer = typename Iter::value_type*;
+    using difference_type = std::ptrdiff_t;  
 
     reverse_iterator() : _dataPtr(nullptr) {
     }

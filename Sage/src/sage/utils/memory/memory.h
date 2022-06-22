@@ -36,7 +36,6 @@ void uninitialized_default(ForwardIterator first, Size n, Allocator& alloc) {
     ForwardIterator current = first;
     try {
         for (; n > 0; --n, ++current) {
-            std::cout << " > " << *first << std::endl;
             alloc.construct(&*current, *first);
         }
     } catch (...) {

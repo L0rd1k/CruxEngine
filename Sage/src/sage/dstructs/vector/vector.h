@@ -10,43 +10,7 @@
 
 namespace sage {
 
-/** @brief Dynamic array
- *   + (constructor)
- *   + (destructor)
- *   +/- operator=
- *
- *   +/- assign
- *
- *   + get_allocator
- *   + at
- *   + operator[]
- *   + front
- *   + back
- *   + data
- *   + begin
- *   + cbegin
- *   + end
- *   + cend
- *   + rbegin
- *   + crbegin
- *   + rend
- *   + crend
- *   + empty
- *   + size
- *   + max_size
- *   + reserve
- *   + capacity
- *   + shrink_to_fit
- *   + clear
- *   insert
- *   + emplace
- *   + erase
- *   + push_back
- *   + emplace_back
- *   + pop_back
- *   + resize
- *   + swap
- **/
+/** @brief Dynamic array. **/
 template <typename Type, typename Allocator = sage::allocator<Type>>
 class vector : protected vector_base<Type, Allocator> {
 private:
@@ -101,8 +65,8 @@ public:
     }
 
     /** @brief Construct vector from iterator range. **/
-    template <typename InputIterator>
-    vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) {
+    vector(iterator first, iterator last, const allocator_type& alloc = allocator_type())
+        : VecBase(alloc) {
         this->initialize_dispatch(first, last);
     }
 
@@ -149,17 +113,16 @@ public:
 
     /** @brief Assign value to vector. **/
     void assign(size_type n, const_reference val) {
-        std::cout << "Vector::assign";
         this->fill_assign(n, val);
     }
+
 
     /** @brief Swap data between two vectors. **/
     void swap(vector& vec) {
         std::swap(this->_start, vec._start);
         std::swap(this->_finish, vec._finish);
         std::swap(this->_storage_end, vec._storage_end);
-        /** @warning check. **/
-        std::__alloc_swap<allocator_type>::_S_do_it(this->_alloc, vec._alloc);
+        sage::_alloc_swap<allocator_type>::do_swap(this->_alloc, vec._alloc);
     }
 
     // template <typename InputIterator>
@@ -169,11 +132,11 @@ public:
     /** @brief  Inserts given value into %vector before specified iterator. **/
     iterator insert(iterator pos, const_reference x) {
         const size_type n = pos - this->begin();
-        if(this->_finish != this->_storage_end && pos == this->end()) {
+        if (this->_finish != this->_storage_end && pos == this->end()) {
             this->get_allocator().construct(this->_finish, x);
             ++this->_finish;
         } else {
-            if(this->_finish != this->_storage_end) {
+            if (this->_finish != this->_storage_end) {
                 Type x_copy = x;
                 this->insert_aux(pos, std::move(x_copy));
             } else {
@@ -301,12 +264,12 @@ public:
 
     /** @brief Get pointer of first vector element. **/
     pointer data() {
-        return front();
+        return &front();
     }
 
     /** @brief Get const pointer of first vector element. **/
     const_pointer data() const {
-        return front();
+        return &front();
     }
 
     /** @brief Returns the number of elements that can be held in currently allocated storage. **/
@@ -505,12 +468,12 @@ private:
         }
     }
 
-    vector fill_assign(size_type size, const_reference val) {
+    void fill_assign(size_type size, const_reference val) {
         if (size > this->capacity()) {
             vector temp(size, val, this->_alloc);
             temp.swap(*this);
         } else if (size > this->size()) {
-            std::fill(begin(), end(), val);
+            std::fill(this->begin(), this->end(), val);
             sage::uninitialized_fill(this->_finish, size - this->size(), val, this->_alloc);
             this->_finish += size - this->size();
         } else {
@@ -537,7 +500,6 @@ private:
                 pointer n_finish(n_start);
                 try {
                     n_finish = sage::uninitialized_move(this->_start, this->_finish, n_start, this->_alloc);
-                    std::cout << *n_finish << std::endl;
                     sage::uninitialized_default(n_finish, n, this->_alloc);
                     n_finish += n;
                 } catch (...) {

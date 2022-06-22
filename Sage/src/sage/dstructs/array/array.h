@@ -3,17 +3,23 @@
 #include <inttypes.h>
 
 #include <cassert>
-#include "../iterators/iterator_lagacy_random_access.h"
-#include "../iterators/iterator_reverse.h"
+#include "src/sage/dstructs/iterators/iterator_lagacy_random_access.h"
+#include "src/sage/dstructs/iterators/iterator_reverse.h"
 namespace sage {
 
 template <typename Type, int32_t ArrSize>
 class array {
 public:
+    using value_type = Type;
+    using pointer = value_type*;
+    using reference = value_type&;
+    using size_type = int32_t;
+    using difference_type = std::ptrdiff_t;
     using iterator = sage::LegacyRandomAccessIterator<Type>;
     using citerator = sage::LegacyRandomAccessIterator<const Type>;
     using riterator = sage::reverse_iterator<iterator>;
     using creverse_iterator = sage::reverse_iterator<citerator>;
+
     /** @brief Access the first element. **/
     Type& front() {
         assert(ArrSize > 0);

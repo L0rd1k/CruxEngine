@@ -35,8 +35,9 @@ FetchContent_MakeAvailable(googletest)
 set(test_sources 
     ./test/dstructs/iterators/test_random_access_iterator.cpp
     ./test/dstructs/iterators/test_reverse_iterator.cpp
+    ./test/dstructs/test_vector.cpp
+    ./test/dstructs/test_array.cpp
 )
-
 
 foreach(files IN LISTS test_sources)
     get_filename_component(filename ${files} NAME_WE)

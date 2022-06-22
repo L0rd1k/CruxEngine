@@ -19,6 +19,8 @@ public:
     using value_type = Type;
     using reference = Type&;
     using pointer = Type*;
+    using difference_type = std::ptrdiff_t;  
+    using iterator_category = std::input_iterator_tag;
 
     virtual ~IOIterator() {
     }
