@@ -10,6 +10,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "3rdParty/ImGui/backends/imgui_impl_opengl3.h"
+#include "3rdParty/ImGui/backends/imgui_impl_glfw.h"
+
 namespace sage {
 
 struct WindowConf {

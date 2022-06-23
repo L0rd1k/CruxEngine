@@ -4,7 +4,7 @@ namespace sage {
 
 static bool _isGlfwInitialized = false;
 static void GLFWErrorCallback(int error, const char* msg) {
-    std::cerr << "GLFW ERROR: " << msg << std::endl;
+    Log::error("GLFW ERROR:", msg);
 }
 
 Window* Window::create(const WindowConf& conf) {
@@ -23,11 +23,11 @@ void LinuxWindow::init(const WindowConf& conf) {
     _data.height = conf.height;
     _data.width = conf.width;
 
-    Log::info("Linux window creating: ", conf.headerTitle, " ", conf.height, " x ", conf.width);
+    Log::info("Linux window creating:", conf.headerTitle, conf.height, "x", conf.width);
 
     if (!_isGlfwInitialized) {
         if (!glfwInit()) {
-            std::cerr << "Could not initilaize GLFW!" << std::endl;
+            Log::error("Could not initilaize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
             return;
         }
@@ -114,11 +114,7 @@ void LinuxWindow::onUpdate() {
 }
 
 void LinuxWindow::setVSync(bool enabled) {
-    if (enabled) {
-        glfwSwapInterval(1);
-    } else {
-        glfwSwapInterval(0);
-    }
+    (enabled) ? glfwSwapInterval(1) : glfwSwapInterval(0);
     _data.isVSync = enabled;
 }
 

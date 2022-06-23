@@ -35,11 +35,11 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
-    sage::vector<int> vec;
-    Log::info(vec.capacity(), vec.size());
-    vec.reserve(7);
-    Log::info(vec.capacity(), vec.size());
-    
+    sage::pair<int, int> pr;
+
+    Log::info(pr.first, pr.second);
+    pr = sage::make_pair(23, 34);
+    Log::info(pr.first, pr.second);
 
     float posSquare[] = {
         -0.5f, -0.5f,  // 0
@@ -49,7 +49,12 @@ void Application::run() {
     };
 
     unsigned int indices[] = {
-        0, 1, 2, 2, 3, 0,
+        0,
+        1,
+        2,
+        2,
+        3,
+        0,
     };
 
     unsigned int vao;

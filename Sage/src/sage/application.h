@@ -13,11 +13,16 @@
 #include <vector>
 #include <algorithm>
 
-#include "dstructs/array/array.h"
-#include "dstructs/vector/vector.h"
-#include "dstructs/allocator/allocator.h"
-
 #include "opengl/shader/shader_utils.h"
+
+#include "src/sage/dstructs/pair/pair.h"
+#include "src/sage/dstructs//map/map.h"
+
+#include "src/sage/dstructs/tree/rb_tree/rb_tree.h"
+#include "src/sage/dstructs/tree/rb_tree/rb_tree_node.h"
+#include "src/sage/dstructs/tree/rb_tree/rb_tree_iterator.h"
+#include "src/sage/dstructs/tree/rb_tree/rb_tree_header.h"
+
 namespace sage {
 
 class Application {
