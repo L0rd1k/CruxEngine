@@ -12,3 +12,6 @@
 	path = Sage/3rdParty/ImGui
 	url = https://github.com/ocornut/imgui.git
 	ignore = dirty
+[submodule "Sage/3rdParty/GLM"]
+	path = Sage/3rdParty/GLM
+	url = https://github.com/g-truc/glm.git

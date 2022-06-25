@@ -1,5 +1,18 @@
 #include "gui_layer.h"
 
+#define IMGUI_IMPL_API
+#include "3rdParty/ImGui/backends/imgui_impl_glfw.h"
+#include "3rdParty/ImGui/backends/imgui_impl_opengl3.h"
+
+#include "src/sage/application.h"
+
+#include "src/sage/events/key_event.h"
+#include "src/sage/events/mouse_event.h"
+#include "src/sage/events/application_event.h"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 namespace sage {
 
 GuiLayer::GuiLayer()
@@ -9,109 +22,57 @@ GuiLayer::GuiLayer()
 GuiLayer::~GuiLayer() {
 }
 
+
 void GuiLayer::onAttach() {
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-    io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
-
-    io.KeyMap[ImGuiKey_Backspace] = GLFW_KEY_BACKSPACE;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
     ImGui::StyleColorsLight();
+    ImGuiStyle& style = ImGui::GetStyle();
+    if(io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
+    Application& app = Application::getApplication();
+    GLFWwindow* window = static_cast<GLFWwindow*>(app.getWindow().getOriginalWindow());
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 300 es");
+} 
+
+void GuiLayer::onDetach() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
-void GuiLayer::onUpdate() {
+void GuiLayer::begin() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+}
+
+void GuiLayer::end() {
     ImGuiIO& io = ImGui::GetIO();
     Application& app = Application::getApplication();
     io.DisplaySize = ImVec2(app.getWindow().getWidth(), app.getWindow().getHeight());
-
-    float time = (float)glfwGetTime();
-    io.DeltaTime = _time > 0.0f ? (time - _time) : (1.0f / 60.0f);
-    _time = time;
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui::NewFrame();
-
-    static bool show = true;
-    ImGui::ShowDemoWindow(&show);
-
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    if(io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        GLFWwindow* context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(context);
+    }
 }
 
-void GuiLayer::onDetach() {
-}
-
-void GuiLayer::onEvent(Event& event) {
-    EventDispatcher dispatch(event);
-    dispatch.Dispatch<MouseButtonPressedEvent>(std::bind(&GuiLayer::onMouseButtonPressedEvent, this, std::placeholders::_1));
-    dispatch.Dispatch<MouseButtonReleasedEvent>(std::bind(&GuiLayer::onMouseButtonReleasedEvent, this, std::placeholders::_1));
-    dispatch.Dispatch<MouseMovedEvent>(std::bind(&GuiLayer::onMouseMovedEvent, this, std::placeholders::_1));
-    dispatch.Dispatch<MouseScrolledEvent>(std::bind(&GuiLayer::onMouseScrolledEvent, this, std::placeholders::_1));
-    dispatch.Dispatch<KeyPressedEvent>(std::bind(&GuiLayer::onKeyPressedEvent, this, std::placeholders::_1));
-    dispatch.Dispatch<KeyReleasedEvent>(std::bind(&GuiLayer::onKeyReleasedEvent, this, std::placeholders::_1));
-    dispatch.Dispatch<WindowResizeEvent>(std::bind(&GuiLayer::onWindowResizeEvent, this, std::placeholders::_1));
-    dispatch.Dispatch<KeyTypedEvent>(std::bind(&GuiLayer::onKeyTypedEvent, this, std::placeholders::_1));
-}
-
-bool GuiLayer::onMouseButtonPressedEvent(MouseButtonPressedEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    io.MouseDown[(int)e.GetMouseButton()] = true;
-    return false;
-}
-
-bool GuiLayer::onMouseButtonReleasedEvent(MouseButtonReleasedEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    io.MouseDown[(int)e.GetMouseButton()] = false;
-    return false;
-}
-
-bool GuiLayer::onMouseMovedEvent(MouseMovedEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    io.MousePos = ImVec2(e.GetX(), e.GetY());
-    return false;
-}
-
-bool GuiLayer::onMouseScrolledEvent(MouseScrolledEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    io.MouseWheelH += e.GetXOffset();
-    io.MouseWheel += e.GetYOffset();
-    return false;
-}
-
-bool GuiLayer::onKeyPressedEvent(KeyPressedEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    io.KeysDown[(int)e.GetKeyCode()] = true;
-
-    io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-    io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-    io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
-    io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
-
-    return false;
-}
-
-bool GuiLayer::onKeyReleasedEvent(KeyReleasedEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    io.KeysDown[(int)e.GetKeyCode()] = false;
-    return false;
-}
-
-bool GuiLayer::onWindowResizeEvent(WindowResizeEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    io.DisplaySize = ImVec2(e.GetWidth(), e.GetHeight());
-    io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
-    glViewport(0, 0, e.GetWidth(), e.GetHeight());
-    return false;
-}
-
-bool GuiLayer::onKeyTypedEvent(KeyTypedEvent& e) {
-    ImGuiIO& io = ImGui::GetIO();
-    int character_code = e.GetKeyCode();
-    if(character_code > 0 && character_code < 0x10000)
-        io.AddInputCharacter((unsigned short)character_code);
-    return false;
+void GuiLayer::onDraw() {
+    static bool isShow = true;
+    ImGui::ShowDemoWindow(&isShow);
 }
 
 }  // namespace sage

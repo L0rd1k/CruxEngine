@@ -8,6 +8,9 @@ Application::Application() {
     _appInstance = this;
     _window = std::unique_ptr<Window>(Window::create());
     _window->setEventCallback(std::bind(&Application::onApplyEvent, this, std::placeholders::_1));
+
+    _guiLayer = std::make_unique<GuiLayer>();
+    pushOverlay(_guiLayer.get());
 }
 
 Application::~Application() {
@@ -41,7 +44,6 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
-
     float posSquare[] = {
         -0.5f, -0.5f,  // 0
         0.5f, -0.5f,   // 1
@@ -104,9 +106,16 @@ void Application::run() {
 
         // glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
         for (Layer* layer : _layerSet) {
             layer->onUpdate();
         }
+
+        _guiLayer->begin();
+        for (Layer* layer : _layerSet) {
+            layer->onDraw();
+        }
+        _guiLayer->end();
 
         _window->onUpdate();
     }

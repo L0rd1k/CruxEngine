@@ -6,6 +6,7 @@ include_directories(.)
 
 add_subdirectory(3rdParty/GLAD)
 add_subdirectory(3rdParty/GLFW)
+add_subdirectory(3rdParty/GLM)
 
 set(SOURCES 
     src/sage/application.cpp
@@ -15,7 +16,6 @@ set(SOURCES
     src/sage/gui/gui_layer.cpp
     src/sage/inputs/linux/linux_input.cpp
 )
-
 
 
 list(APPEND SOURCES    
@@ -75,4 +75,4 @@ endforeach()
 # add_subdirectory(3rdParty/ImGui)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
-target_link_libraries(${PROJECT_NAME} GL glfw glad) # ImGui)
+target_link_libraries(${PROJECT_NAME} GL glfw glad glm) # ImGui)

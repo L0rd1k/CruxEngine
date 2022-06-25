@@ -2,8 +2,8 @@
 
 namespace sage {
 
-LayerSet::LayerSet() {
-    _layerInsert = _layers.begin();
+LayerSet::LayerSet()
+    : _layerInsertIdx(0) {
 }
 
 LayerSet::~LayerSet() {
@@ -13,7 +13,8 @@ LayerSet::~LayerSet() {
 }
 
 void LayerSet::pushLayer(Layer* layer) {
-    _layerInsert = _layers.emplace(_layerInsert, layer);
+    _layers.emplace(_layers.begin() + _layerInsertIdx, layer);
+    _layerInsertIdx++;
 }
 
 void LayerSet::pushOverlay(Layer* overlay) {
@@ -24,7 +25,7 @@ void LayerSet::popLayer(Layer* layer) {
     auto it = std::find(_layers.begin(), _layers.end(), layer);
     if (it != _layers.end()) {
         _layers.erase(it);
-        _layerInsert--;
+        _layerInsertIdx--;
     }
 }
 

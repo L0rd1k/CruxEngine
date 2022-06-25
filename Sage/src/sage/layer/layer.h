@@ -17,6 +17,8 @@ public:
     }
     virtual void onUpdate() {
     }
+    virtual void onDraw() {
+    }
     virtual void onEvent(Event& e) {
     }
     inline const std::string& getName() const {
