@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <functional>
 #include <string>
 #include <iostream>
@@ -10,16 +11,14 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "3rdParty/ImGui/backends/imgui_impl_opengl3.h"
-#include "3rdParty/ImGui/backends/imgui_impl_glfw.h"
-
 namespace sage {
 
 struct WindowConf {
-    WindowConf(const std::string& title = "SageEngine", 
-        unsigned int w = 1280, unsigned int h = 720) :
-    headerTitle(title), width(w), height(h) {
-    }  
+    WindowConf(const std::string& title = "SageEngine",
+               unsigned int w = 1280,
+               unsigned int h = 720)
+        : headerTitle(title), width(w), height(h) {
+    }
     std::string headerTitle;
     unsigned int width;
     unsigned int height;
@@ -36,6 +35,8 @@ public:
     virtual void setEventCallback(const EventCallbackFunction& callback) = 0;
     virtual void setVSync(bool enabled) = 0;
     virtual bool isVSunc() const = 0;
+
+    virtual void* getOriginalWindow() const = 0;
 
     static Window* create(const WindowConf& conf = WindowConf());
 };

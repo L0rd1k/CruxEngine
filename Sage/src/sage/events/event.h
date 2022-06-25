@@ -28,6 +28,7 @@ enum class EventTypes {
     AppRender,
     KeyPressed,
     KeyReleased,
+    KeyTyped,
 };
 
 /** @brief Event's categories sublist **/

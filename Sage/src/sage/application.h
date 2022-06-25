@@ -1,44 +1,46 @@
 #pragma once
 
-#include "window/window.h"
-
-#include "events/event.h"
-#include "events/application_event.h"
-#include "layer/layer_set.h"
-#include "utils/logger/log.h"
-
+#include <algorithm>
 #include <iostream>
 #include <memory>
-
 #include <vector>
-#include <algorithm>
 
+#include "events/application_event.h"
+#include "events/event.h"
+#include "layer/layer_set.h"
 #include "opengl/shader/shader_utils.h"
 
-#include "src/sage/dstructs/pair/pair.h"
-#include "src/sage/dstructs//map/map.h"
-
-#include "src/sage/dstructs/tree/rb_tree/rb_tree.h"
-#include "src/sage/dstructs/tree/rb_tree/rb_tree_node.h"
-#include "src/sage/dstructs/tree/rb_tree/rb_tree_iterator.h"
-#include "src/sage/dstructs/tree/rb_tree/rb_tree_header.h"
+#include "utils/logger/log.h"
+#include "window/window.h"
+#include "inputs/input.h"
 
 namespace sage {
 
 class Application {
-   public:
+public:
     Application();
     virtual ~Application();
     void run();
     void onApplyEvent(Event& event);
     void pushLayer(Layer* layer);
     void pushOverlay(Layer* layer);
+
+    inline static Window& getWindow() {
+        return *_window;
+    };
+
+    inline static Application& getApplication() {
+        return *_appInstance;
+    }
+
 private:
     bool onWindowClose(WindowCloseEvent& e);
+
 private:
-    std::unique_ptr<Window> _window;
+    static std::unique_ptr<Window> _window;
     bool _isRunning = true;
     LayerSet _layerSet;
+    static Application* _appInstance;
 };
 
 Application* CreateApplication();

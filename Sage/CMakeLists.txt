@@ -12,23 +12,28 @@ set(SOURCES
     src/sage/window/linux/linux_window.cpp
     src/sage/layer/layer.cpp
     src/sage/layer/layer_set.cpp
-    
+    src/sage/gui/gui_layer.cpp
+    src/sage/inputs/linux/linux_input.cpp
+)
 
-    3rdParty/ImGui/imconfig.h
-    3rdParty/ImGui/imgui_demo.cpp
-    3rdParty/ImGui/imgui_draw.cpp
-    3rdParty/ImGui/imgui_tables.cpp
-    3rdParty/ImGui/backends/imgui_impl_glfw.cpp
-    3rdParty/ImGui/backends/imgui_impl_glfw.h
-    3rdParty/ImGui/backends/imgui_impl_opengl3.cpp
-    3rdParty/ImGui/backends/imgui_impl_opengl3.h
-    3rdParty/ImGui/imgui_internal.h
-    3rdParty/ImGui/imgui_widgets.cpp
-    3rdParty/ImGui/imgui.cpp
-    3rdParty/ImGui/imgui.h
-    3rdParty/ImGui/imstb_rectpack.h
-    3rdParty/ImGui/imstb_textedit.h
-    3rdParty/ImGui/imstb_truetype.h
+
+
+list(APPEND SOURCES    
+    ./3rdParty/ImGui/imconfig.h
+    ./3rdParty/ImGui/imgui_demo.cpp
+    ./3rdParty/ImGui/imgui_draw.cpp
+    ./3rdParty/ImGui/imgui_tables.cpp
+    ./3rdParty/ImGui/backends/imgui_impl_glfw.cpp
+    ./3rdParty/ImGui/backends/imgui_impl_glfw.h
+    ./3rdParty/ImGui/backends/imgui_impl_opengl3.cpp
+    ./3rdParty/ImGui/backends/imgui_impl_opengl3.h
+    ./3rdParty/ImGui/imgui_internal.h
+    ./3rdParty/ImGui/imgui_widgets.cpp
+    ./3rdParty/ImGui/imgui.cpp
+    ./3rdParty/ImGui/imgui.h
+    ./3rdParty/ImGui/imstb_rectpack.h
+    ./3rdParty/ImGui/imstb_textedit.h
+    ./3rdParty/ImGui/imstb_truetype.h
 )
 
 find_package(OpenGL REQUIRED)

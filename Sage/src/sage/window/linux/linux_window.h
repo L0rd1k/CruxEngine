@@ -25,6 +25,8 @@ public:
     };
     void setVSync(bool enabled);
     bool isVSunc() const;
+
+    inline virtual void* getOriginalWindow() const { return _window; };
 private:
     virtual void init(const WindowConf& conf);
     virtual void close();

@@ -91,7 +91,6 @@ static rb_tree_node_base* local_rb_tree_decrement(rb_tree_node_base* x) throw() 
     return x;
 }
 
-
 rb_tree_node_base* rb_tree_increment(rb_tree_node_base* x) throw() {
     return local_rb_tree_increment(x);
 }

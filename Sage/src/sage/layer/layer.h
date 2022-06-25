@@ -9,7 +9,7 @@ namespace sage {
 class Layer {
     
 public:
-    Layer(const std::string& name = "Layer");
+    Layer(const std::string& name = "DefaultLayer");
     virtual ~Layer();
     virtual void onAttach() {
     }

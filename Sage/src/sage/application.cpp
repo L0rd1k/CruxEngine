@@ -1,7 +1,11 @@
 #include "application.h"
 namespace sage {
 
+std::unique_ptr<Window> Application::_window = nullptr;
+Application* Application::_appInstance = nullptr;
+
 Application::Application() {
+    _appInstance = this;
     _window = std::unique_ptr<Window>(Window::create());
     _window->setEventCallback(std::bind(&Application::onApplyEvent, this, std::placeholders::_1));
 }
@@ -11,10 +15,12 @@ Application::~Application() {
 
 void Application::pushLayer(Layer* layer) {
     _layerSet.pushLayer(layer);
+    layer->onAttach();
 }
 
 void Application::pushOverlay(Layer* layer) {
     _layerSet.pushOverlay(layer);
+    layer->onAttach();
 }
 
 void Application::onApplyEvent(Event& e) {
@@ -35,11 +41,6 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
-    sage::pair<int, int> pr;
-
-    Log::info(pr.first, pr.second);
-    pr = sage::make_pair(23, 34);
-    Log::info(pr.first, pr.second);
 
     float posSquare[] = {
         -0.5f, -0.5f,  // 0
@@ -106,6 +107,7 @@ void Application::run() {
         for (Layer* layer : _layerSet) {
             layer->onUpdate();
         }
+
         _window->onUpdate();
     }
 

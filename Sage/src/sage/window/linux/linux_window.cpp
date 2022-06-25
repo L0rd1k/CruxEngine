@@ -75,6 +75,12 @@ void LinuxWindow::init(const WindowConf& conf) {
         }
     });
 
+    glfwSetCharCallback(_window, [](GLFWwindow* window, unsigned int character_code) {
+        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        KeyTypedEvent event(character_code);
+        data.eventCallback(event);
+    });
+ 
     glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int modes) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
         switch (action) {
