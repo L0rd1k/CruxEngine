@@ -16,6 +16,7 @@ set(SOURCES
     src/sage/gui/gui_layer.cpp
     src/sage/inputs/linux/linux_input.cpp
     src/sage/render/opengl/opengl_renderer_context.cpp
+    src/sage/render/shader.cpp
 )
 
 if(USE_IMGUI)

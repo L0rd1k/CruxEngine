@@ -82,29 +82,26 @@ void Application::run() {
 
     /** @warning remove absolute path **/
     ShaderData data = parseShader("../../Sage/data/test.shader");
-    unsigned int shader = createShader(data.VertexData, data.FragmentData);
-    glUseProgram(shader);
-    int location = glGetUniformLocation(shader, "u_color");
+
+    _shader.reset(new Shader(data.VertexData, data.FragmentData));
+    _shader->bind();
+    int location = glGetUniformLocation(_shader->getShaderPorgram(), "u_color");
     assert(location != -1);
-    glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0f);
+    glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0);
 
     //> Unbinding
     glBindVertexArray(0);
-    glUseProgram(0);
+    _shader->unbind();
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     while (_isRunning) {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //> Binding
-        glUseProgram(shader);
+        _shader->bind();
         glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0f);
-
         glBindVertexArray(vao);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer);
-
-        // glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         for (Layer* layer : _layerSet) {
@@ -120,7 +117,7 @@ void Application::run() {
         _window->onUpdate();
     }
 
-    glDeleteProgram(shader);
+    // glDeleteProgram(shader);
 }
 
 }  // namespace sage
