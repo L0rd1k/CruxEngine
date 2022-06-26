@@ -1,9 +1,10 @@
+#include "3rdParty/ImGui/imgui.h"
 #include "src/sage.h"
 
 class ExampleLayer : public sage::Layer {
 public:
     ExampleLayer() : Layer("Example") {
-	}
+    }
     void onUpdate() override {
         // auto pos = sage::Input::getMousePos();
         // sage::Log::info(pos.first, "/", pos.second);
@@ -18,6 +19,14 @@ public:
             sage::KeyPressedEvent& e = (sage::KeyPressedEvent&)event;
             sage::Log::trace((char)e.GetKeyCode());
         }
+    }
+
+    void onDraw() override {
+        // ImGui::Begin("Test");
+        // ImGui::Text("This is some useful text.");           // Display some text (you can use a format strings too)
+        // float f = 0.0;
+        // ImGui::SliderFloat("Velocity", &f, 0.0f, 1.0f);             // Edit 1 float using a slider from 0.0f to 1.0f
+        // ImGui::End();
     }
 };
 

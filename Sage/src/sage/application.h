@@ -5,7 +5,6 @@
 #include <memory>
 #include <vector>
 
-
 #include "events/application_event.h"
 #include "events/event.h"
 #include "layer/layer_set.h"
@@ -39,7 +38,7 @@ private:
 
 private:
     static std::unique_ptr<Window> _window;
-    std::unique_ptr<GuiLayer> _guiLayer;
+    GuiLayer* _guiLayer;
     bool _isRunning = true;
     LayerSet _layerSet;
     static Application* _appInstance;

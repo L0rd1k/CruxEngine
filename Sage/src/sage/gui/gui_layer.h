@@ -8,7 +8,7 @@ namespace sage {
 class GuiLayer : public Layer {
 public:
     GuiLayer();
-    ~GuiLayer();
+    virtual ~GuiLayer();
     virtual void onAttach() override;
     virtual void onDetach() override;
     virtual void onDraw() override;

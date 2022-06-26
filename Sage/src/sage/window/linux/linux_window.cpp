@@ -35,8 +35,9 @@ void LinuxWindow::init(const WindowConf& conf) {
     }
 
     _window = glfwCreateWindow((int)conf.width, (int)conf.height, _data.title.c_str(), nullptr, nullptr);
-    glfwMakeContextCurrent(_window);
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);  //> Make use of existing GLFW loader;
+    _context = std::make_unique<OpenGlRendererContext>(_window);
+    _context->init();
+    
     glfwSetWindowUserPointer(_window, &_data);
     setVSync(true);
 
@@ -116,7 +117,7 @@ void LinuxWindow::close() {
 
 void LinuxWindow::onUpdate() {
     glfwPollEvents();
-    glfwSwapBuffers(_window);
+    _context->swapBuffer();
 }
 
 void LinuxWindow::setVSync(bool enabled) {

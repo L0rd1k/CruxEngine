@@ -1,9 +1,13 @@
 #pragma once
 
-#include "../window.h"
-#include "../../events/key_event.h"
-#include "../../events/mouse_event.h"
-#include "../../events/application_event.h"
+#include <memory>
+
+#include "src/sage/window/window.h"
+#include "src/sage/events/key_event.h"
+#include "src/sage/events/mouse_event.h"
+#include "src/sage/events/application_event.h"
+
+#include "src/sage/render/opengl/opengl_renderer_context.h"
 
 namespace sage {
 
@@ -41,6 +45,9 @@ private:
     };
 
     WindowData _data;
+
+    std::unique_ptr<RendererContext> _context;
+
 };
 
     

@@ -9,8 +9,8 @@ Application::Application() {
     _window = std::unique_ptr<Window>(Window::create());
     _window->setEventCallback(std::bind(&Application::onApplyEvent, this, std::placeholders::_1));
 
-    _guiLayer = std::make_unique<GuiLayer>();
-    pushOverlay(_guiLayer.get());
+    _guiLayer = new GuiLayer();
+    pushOverlay(_guiLayer);
 }
 
 Application::~Application() {

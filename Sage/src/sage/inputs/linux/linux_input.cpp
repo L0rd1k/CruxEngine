@@ -6,7 +6,7 @@
 
 namespace sage {
 
-/** @warning Clear memory. **/
+/** @warning Explicitly clear memory.  Memory leak. **/
 Input* Input::_keyInstance = new LinuxInput();
 
 bool LinuxInput::impl_isKeyPressed(int keyCode) {
