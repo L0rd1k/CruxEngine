@@ -64,21 +64,26 @@ void Application::run() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
+
+    _vertexBuffer.reset(VertexBuffer::init(posSquare, sizeof(posSquare)));
+
     //> Vertex buffer - Pass data to OpenGL2,
-    unsigned int buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), posSquare, GL_STATIC_DRAW);
+    // unsigned int buffer;
+    // glGenBuffers(1, &buffer);
+    // glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    // glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), posSquare, GL_STATIC_DRAW);
 
     // Links vertex buffer with vao
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
+    _indexBuffer.reset(IndexBuffer::init(indices, sizeof(indices) / sizeof(indices[0])));
+
     //> Index buffer
-    unsigned int idx_buffer;
-    glGenBuffers(1, &idx_buffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    // unsigned int idx_buffer;
+    // glGenBuffers(1, &idx_buffer);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     /** @warning remove absolute path **/
     ShaderData data = parseShader("../../Sage/data/test.shader");
@@ -92,17 +97,19 @@ void Application::run() {
     //> Unbinding
     glBindVertexArray(0);
     _shader->unbind();
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     while (_isRunning) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         _shader->bind();
         glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0f);
+
         glBindVertexArray(vao);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _id);
+
+        glDrawElements(GL_TRIANGLES, _indexBuffer->getSize(), GL_UNSIGNED_INT, nullptr);
 
         for (Layer* layer : _layerSet) {
             layer->onUpdate();

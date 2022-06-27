@@ -9,6 +9,7 @@
 #include "events/event.h"
 #include "layer/layer_set.h"
 #include "opengl/shader/shader_utils.h"
+#include "render/buffer.h"
 #include "render/shader.h"
 
 #include "utils/logger/log.h"
@@ -39,7 +40,11 @@ private:
 
 private:
     static std::unique_ptr<Window> _window;
+    
     std::unique_ptr<Shader> _shader;
+    std::unique_ptr<VertexBuffer> _vertexBuffer;
+    std::unique_ptr<IndexBuffer> _indexBuffer;
+
     GuiLayer* _guiLayer;
     bool _isRunning = true;
     LayerSet _layerSet;
