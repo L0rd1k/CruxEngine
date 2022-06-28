@@ -4,6 +4,38 @@ namespace sage {
 std::unique_ptr<Window> Application::_window = nullptr;
 Application* Application::_appInstance = nullptr;
 
+static GLenum ShaderTypetoGLType(ShaderType type) {
+    switch (type) {
+        case sage::ShaderType::fVec:
+            return GL_FLOAT;
+        case sage::ShaderType::fVec2:
+            return GL_FLOAT;
+        case sage::ShaderType::fVec3:
+            return GL_FLOAT;
+        case sage::ShaderType::fVec4:
+            return GL_FLOAT;
+        case sage::ShaderType::Mat3:
+            return GL_FLOAT;
+        case sage::ShaderType::Mat4:
+            return GL_FLOAT;
+        case sage::ShaderType::iVec:
+            return GL_INT;
+        case sage::ShaderType::iVec2:
+            return GL_INT;
+        case sage::ShaderType::iVec3:
+            return GL_INT;
+        case sage::ShaderType::iVec4:
+            return GL_INT;
+        case sage::ShaderType::Bool:
+            return GL_BOOL;
+        default: {
+            sage::Log::warning("Unknown shader data type(converter)");
+            return 0;
+        }
+    }
+    return 0;
+}
+
 Application::Application() {
     _appInstance = this;
     _window = std::unique_ptr<Window>(Window::create());
@@ -44,71 +76,55 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 }
 
 void Application::run() {
-    float posSquare[] = {
-        -0.5f, -0.5f,  // 0
-        0.5f, -0.5f,   // 1
-        0.5f, 0.5f,    // 2
-        -0.5f, 0.5f,   // 3
-    };
 
-    unsigned int indices[] = {
-        0,
-        1,
-        2,
-        2,
-        3,
-        0,
-    };
+    float posSquare[3 * 7] = {
+        -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+        0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+        0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f};
+
+    unsigned int indices[3] = {0, 1, 2};
 
     unsigned int vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-
     _vertexBuffer.reset(VertexBuffer::init(posSquare, sizeof(posSquare)));
 
-    //> Vertex buffer - Pass data to OpenGL2,
-    // unsigned int buffer;
-    // glGenBuffers(1, &buffer);
-    // glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    // glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), posSquare, GL_STATIC_DRAW);
+    {
+        sage::BufferArrLayout m_layout = {
+            {ShaderType::fVec3, "a_Position"},
+            {ShaderType::fVec4, "a_Color"}
+        };
+        _vertexBuffer->setLayout(m_layout);
+    }
 
-    // Links vertex buffer with vao
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+    uint32_t index = 0;
+    const auto& layout = _vertexBuffer->getLayout();
+    for (const auto& elem : layout) {
+        glEnableVertexAttribArray(index);
+        glVertexAttribPointer(index,
+                              elem.getElementsCount(), 
+                              ShaderTypetoGLType(elem.type),
+                              elem.normalized ? GL_TRUE : GL_FALSE,
+                              layout.getStride(),
+                              reinterpret_cast<const void*>(elem.offset));
+        index++;
+    }
 
     _indexBuffer.reset(IndexBuffer::init(indices, sizeof(indices) / sizeof(indices[0])));
-
-    //> Index buffer
-    // unsigned int idx_buffer;
-    // glGenBuffers(1, &idx_buffer);
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_buffer);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     /** @warning remove absolute path **/
     ShaderData data = parseShader("../../Sage/data/test.shader");
 
     _shader.reset(new Shader(data.VertexData, data.FragmentData));
-    _shader->bind();
-    int location = glGetUniformLocation(_shader->getShaderPorgram(), "u_color");
-    assert(location != -1);
-    glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0);
-
-    //> Unbinding
-    glBindVertexArray(0);
-    _shader->unbind();
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     while (_isRunning) {
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         _shader->bind();
-        glUniform4f(location, 0.3f, 0.3f, 0.3f, 1.0f);
 
         glBindVertexArray(vao);
-        // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _id);
-
         glDrawElements(GL_TRIANGLES, _indexBuffer->getSize(), GL_UNSIGNED_INT, nullptr);
 
         for (Layer* layer : _layerSet) {

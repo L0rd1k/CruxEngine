@@ -8,11 +8,18 @@ class OpenGlVertexBuffer : public VertexBuffer {
 public:
     OpenGlVertexBuffer(float* vertices, uint32_t size);
     virtual ~OpenGlVertexBuffer();
-    virtual void bind() const;
-    virtual void unbind() const;
+    virtual void bind() const override;
+    virtual void unbind() const override;
 
+    virtual void setLayout(const BufferArrLayout& layout) override {
+        _layout = layout;
+    }
+    virtual const BufferArrLayout& getLayout() const override {
+        return _layout;
+    }
 private:
     uint32_t _rendererId;
+    BufferArrLayout _layout;
 };
 
 
