@@ -11,6 +11,7 @@
 #include "opengl/shader/shader_utils.h"
 #include "render/buffer.h"
 #include "render/shader.h"
+#include "render/vertex_array.h"
 
 #include "utils/logger/log.h"
 #include "window/window.h"
@@ -41,13 +42,17 @@ private:
 private:
     static std::unique_ptr<Window> _window;
     
-    std::unique_ptr<Shader> _shader;
-    std::unique_ptr<VertexBuffer> _vertexBuffer;
-    std::unique_ptr<IndexBuffer> _indexBuffer;
+    std::shared_ptr<Shader> _shader;
+    std::shared_ptr<VertexBuffer> _vertexBuffer;
+    std::shared_ptr<IndexBuffer> _indexBuffer;
+    std::shared_ptr<VertexArray> _vertexArray;
+
+    std::shared_ptr<Shader> _shader2;
+    std::shared_ptr<VertexArray> _squareVertexArray;
 
     GuiLayer* _guiLayer;
     bool _isRunning = true;
-    LayerSet _layerSet;
+    LayerSet _layerSet; 
     static Application* _appInstance;
 };
 

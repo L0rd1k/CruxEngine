@@ -17,9 +17,11 @@ set(SOURCES
     src/sage/inputs/linux/linux_input.cpp
     src/sage/render/opengl/opengl_renderer_context.cpp
     src/sage/render/opengl/opengl_buffer.cpp
+    src/sage/render/opengl/opengl_vertex_array.cpp
     src/sage/render/shader.cpp
     src/sage/render/buffer.cpp
     src/sage/render/renderer.cpp
+    src/sage/render/vertex_array.cpp
 )
 
 if(USE_IMGUI)
