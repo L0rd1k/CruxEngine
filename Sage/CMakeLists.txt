@@ -15,13 +15,18 @@ set(SOURCES
     src/sage/layer/layer_set.cpp
     src/sage/gui/gui_layer.cpp
     src/sage/inputs/linux/linux_input.cpp
-    src/sage/render/opengl/opengl_renderer_context.cpp
-    src/sage/render/opengl/opengl_buffer.cpp
-    src/sage/render/opengl/opengl_vertex_array.cpp
+    
     src/sage/render/shader.cpp
-    src/sage/render/buffer.cpp
+    src/sage/render/buffer_layout.cpp
     src/sage/render/renderer.cpp
-    src/sage/render/vertex_array.cpp
+    src/sage/render/renderer_api.cpp
+    src/sage/render/render_cmd.cpp
+
+    src/sage/render/opengl/opengl_renderer_context.cpp
+    src/sage/render/opengl/opengl_index_buffer.cpp
+    src/sage/render/opengl/opengl_vertex_buffer.cpp
+    src/sage/render/opengl/opengl_vertex_array.cpp
+    src/sage/render/opengl/opengl_renderer_api.cpp
 )
 
 if(USE_IMGUI)

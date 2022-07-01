@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cassert>
+#include <glad/glad.h>
 
 #include "src/sage/render/vertex_array.h"
 

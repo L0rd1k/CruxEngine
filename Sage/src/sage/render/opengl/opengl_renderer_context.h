@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/sage/render/renderer_context_base.h"
+#include "src/sage/render/renderer_context.h"
 #include "src/sage/utils/logger/log.h"
 
 #include <glad/glad.h>

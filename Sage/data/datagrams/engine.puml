@@ -1,0 +1,69 @@
+@startuml
+
+skinparam componentStyle rectangle
+
+package Renderer #dde7eb {
+
+    package OpenGL #dde7eb {
+        class OpenGlVertexBuffer {}
+        class OpenGlVertexArray {}
+        class OpenGlRendererContext {}
+        class OpenGlIndexBuffer {}
+        class OpenGlRendererAPI {}
+    }
+
+    package Buffer #dde7eb {
+        abstract VertexBuffer {}
+        BufferLayout o-- VertexBuffer
+        abstract IndexBuffer {}
+        class BufferLayout {}
+        class BufferElement {}
+    }
+
+    package Builder #dde7eb {
+        class VertexArrayBuilder {} 
+        class VertexBufferBuilder {}
+        class IndexBufferBuilder {}
+    }
+
+    OpenGlVertexArray *-- VertexArrayBuilder
+    OpenGlVertexBuffer *-- VertexBufferBuilder
+    OpenGlIndexBuffer *-- IndexBufferBuilder
+
+    abstract VertexArray {}
+
+    VertexBuffer *-- VertexArray
+    IndexBuffer *-- VertexArray
+
+    class Shader {}
+    class Renderer {}
+    enum RendererType {}
+    interface RendererContext {}
+    abstract RendererApi {}
+    class RenderCmd {}
+
+    RendererContext <|-- OpenGlRendererContext
+
+    VertexBuffer <|-- OpenGlVertexBuffer
+
+    BufferLayout *-- OpenGlVertexBuffer
+
+    IndexBuffer <|-- OpenGlIndexBuffer
+
+    VertexArray <|-- OpenGlVertexArray
+    VertexBuffer *-- OpenGlVertexArray 
+    IndexBuffer *-- OpenGlVertexArray 
+
+    RendererApi <|-- OpenGlRendererAPI
+    Renderer *-- RendererType
+    RendererApi *-- RendererType
+
+    RenderCmd *-- RendererApi
+    RenderCmd *-- OpenGlRendererAPI 
+
+    BufferLayout *-- BufferElement
+}
+
+
+@enduml
+

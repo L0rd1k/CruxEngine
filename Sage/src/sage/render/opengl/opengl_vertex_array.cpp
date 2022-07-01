@@ -1,6 +1,5 @@
 #include "opengl_vertex_array.h"
 
-#include <glad/glad.h>
 
 namespace sage {
 

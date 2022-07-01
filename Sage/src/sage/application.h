@@ -9,9 +9,19 @@
 #include "events/event.h"
 #include "layer/layer_set.h"
 #include "opengl/shader/shader_utils.h"
-#include "render/buffer.h"
+
+#include "render/buffer_layout.h"
+#include "render/index_buffer.h"
+#include "render/vertex_buffer.h"
+
 #include "render/shader.h"
 #include "render/vertex_array.h"
+
+#include "render/renderer.h"
+
+#include "render/renderer_api.h"
+
+#include "render/builder/buffer_builder.h"
 
 #include "utils/logger/log.h"
 #include "window/window.h"
@@ -46,6 +56,7 @@ private:
     std::shared_ptr<VertexBuffer> _vertexBuffer;
     std::shared_ptr<IndexBuffer> _indexBuffer;
     std::shared_ptr<VertexArray> _vertexArray;
+
 
     std::shared_ptr<Shader> _shader2;
     std::shared_ptr<VertexArray> _squareVertexArray;

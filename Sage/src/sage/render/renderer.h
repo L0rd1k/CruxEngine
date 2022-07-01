@@ -1,19 +1,20 @@
 #pragma once
 
-namespace sage {
+#include <memory>
 
-enum class RendererType {
-    Undefined = 0,
-    OpenGL = 1,
-};
+#include "render_cmd.h"
+#include "vertex_array.h"
+
+namespace sage {
 
 class Renderer {
 public:
-    inline static RendererType getRendererType() {
-        return _rendererType;
+    static void startScene();
+    static void endScene();
+    static void submit(const std::shared_ptr<VertexArray>& vao);
+    inline static RendererApi::RendererType getRendererType() {
+        return RendererApi::getAPI();
     }
-private:
-    static RendererType _rendererType;
 };
 
 }  // namespace sage
