@@ -68,4 +68,9 @@ void Shader::unbind() const {
     glUseProgram(0);
 }
 
+void Shader::loadUniform(const std::string& name, const glm::mat4& mat) {
+    int location = glGetUniformLocation(_rendererId, name.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
 }  // namespace sage

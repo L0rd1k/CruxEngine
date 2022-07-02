@@ -16,28 +16,17 @@ BufferElement::BufferElement(ShaderType type,
 
 uint32_t BufferElement::getElementsCount() const {
     switch (type) {
-        case ShaderType::fVec:
-            return 1;
-        case ShaderType::fVec2:
-            return 2;
-        case ShaderType::fVec3:
-            return 3;
-        case ShaderType::fVec4:
-            return 4;
-        case ShaderType::Mat3:
-            return 9;
-        case ShaderType::Mat4:
-            return 16;
-        case ShaderType::iVec:
-            return 1;
-        case ShaderType::iVec2:
-            return 2;
-        case ShaderType::iVec3:
-            return 3;
-        case ShaderType::iVec4:
-            return 4;
-        case ShaderType::Bool:
-            return 1;
+        case ShaderType::fVec:  return 1;
+        case ShaderType::fVec2: return 2;
+        case ShaderType::fVec3: return 3;
+        case ShaderType::fVec4: return 4;
+        case ShaderType::Mat3:  return 9;
+        case ShaderType::Mat4:  return 16;
+        case ShaderType::iVec:  return 1;
+        case ShaderType::iVec2: return 2;
+        case ShaderType::iVec3: return 3;
+        case ShaderType::iVec4: return 4;
+        case ShaderType::Bool:  return 1;
         default: {
             Log::warning("Unknown shader data size(elem count)");
             return 0;
@@ -84,28 +73,17 @@ void BufferLayout::calculatStrideOffset() {
 
 static uint32_t getShaderTypeSize(ShaderType type) {
     switch (type) {
-        case ShaderType::fVec:
-            return 4;
-        case ShaderType::fVec2:
-            return 4 * 2;
-        case ShaderType::fVec3:
-            return 4 * 3;
-        case ShaderType::fVec4:
-            return 4 * 4;
-        case ShaderType::Mat3:
-            return 4 * 3 * 3;
-        case ShaderType::Mat4:
-            return 4 * 4 * 4;
-        case ShaderType::iVec:
-            return 4;
-        case ShaderType::iVec2:
-            return 4 * 2;
-        case ShaderType::iVec3:
-            return 4 * 3;
-        case ShaderType::iVec4:
-            return 4 * 4;
-        case ShaderType::Bool:
-            return 1;
+        case ShaderType::fVec:  return 4;
+        case ShaderType::fVec2: return 4 * 2;
+        case ShaderType::fVec3: return 4 * 3;
+        case ShaderType::fVec4: return 4 * 4;
+        case ShaderType::Mat3:  return 4 * 3 * 3;
+        case ShaderType::Mat4:  return 4 * 4 * 4;
+        case ShaderType::iVec:  return 4;
+        case ShaderType::iVec2: return 4 * 2;
+        case ShaderType::iVec3: return 4 * 3;
+        case ShaderType::iVec4: return 4 * 4;
+        case ShaderType::Bool:  return 1;
         default: {
             Log::warning("Unknown shader data type(type size)");
             return 0;

@@ -1,8 +1,10 @@
 #pragma once
 
+#include <cassert>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <string>
 #include <vector>
-#include <cassert>
 
 #include "src/sage/utils/logger/log.h"
 
@@ -19,6 +21,10 @@ public:
     unsigned int getShaderPorgram() {
         return _rendererId;
     }
+
+    /** @brief Upload Vec4 uniform in shader. **/
+    void loadUniform(const std::string& name, const glm::mat4& mat);
+
 private:
     unsigned int compileShader(unsigned int type, const std::string& source);
     void createShader(const std::string& vertexShader, const std::string& fragmentShader);

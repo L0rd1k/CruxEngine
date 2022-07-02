@@ -13,15 +13,13 @@
 #include "render/buffer_layout.h"
 #include "render/index_buffer.h"
 #include "render/vertex_buffer.h"
-
 #include "render/shader.h"
 #include "render/vertex_array.h"
-
 #include "render/renderer.h"
-
 #include "render/renderer_api.h"
-
 #include "render/builder/buffer_builder.h"
+#include "render/cameras/ortho_camera.h"
+
 
 #include "utils/logger/log.h"
 #include "window/window.h"
@@ -51,15 +49,6 @@ private:
 
 private:
     static std::unique_ptr<Window> _window;
-    
-    std::shared_ptr<Shader> _shader;
-    std::shared_ptr<VertexBuffer> _vertexBuffer;
-    std::shared_ptr<IndexBuffer> _indexBuffer;
-    std::shared_ptr<VertexArray> _vertexArray;
-
-
-    std::shared_ptr<Shader> _shader2;
-    std::shared_ptr<VertexArray> _squareVertexArray;
 
     GuiLayer* _guiLayer;
     bool _isRunning = true;

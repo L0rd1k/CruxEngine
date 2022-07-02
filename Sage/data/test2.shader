@@ -3,12 +3,14 @@
 precision mediump float;
 layout(location = 0) in vec3 a_Position;
 
+uniform mat4 view_proj;
+
 out mediump vec3 v_Position;
 
 void main()
 {   
     v_Position = a_Position;
-    gl_Position = vec4(a_Position, 1.0);
+    gl_Position = view_proj * vec4(a_Position, 1.0);
 }
 
 #shader fragment

@@ -1,26 +1,19 @@
-#pragma once 
-
-#include "renderer_api.h"
+#pragma once
 
 #include "opengl/opengl_renderer_api.h"
+#include "renderer_api.h"
 
 namespace sage {
 
 class RenderCmd {
 public:
+    static void clearColor(const glm::vec4& color);
+    static void clear();
 
-    inline static void clearColor(const glm::vec4& color) {
-        _rendererApi->clearColor(color);
-    }
-    inline static void clear() {
-        _rendererApi->clear();
-    }
+    static void drawIndexed(const std::shared_ptr<VertexArray>& vao);
 
-    inline static void drawIndexed(const std::shared_ptr<VertexArray>& vao) {
-        _rendererApi->drawIndexed(vao);
-    }
 private:
     static RendererApi* _rendererApi;
 };
 
-}
+}  // namespace sage

@@ -21,6 +21,7 @@ set(SOURCES
     src/sage/render/renderer.cpp
     src/sage/render/renderer_api.cpp
     src/sage/render/render_cmd.cpp
+    src/sage/render/cameras/ortho_camera.cpp
 
     src/sage/render/opengl/opengl_renderer_context.cpp
     src/sage/render/opengl/opengl_index_buffer.cpp
