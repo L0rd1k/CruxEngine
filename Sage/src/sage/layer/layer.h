@@ -2,7 +2,8 @@
 
 #include <string>
 
-#include "../events/event.h"
+#include "src/sage/events/event.h"
+#include "src/sage/core/timestep.h"
 
 namespace sage {
 
@@ -15,7 +16,7 @@ public:
     }
     virtual void onDetach() {
     }
-    virtual void onUpdate() {
+    virtual void onUpdate(Timestep ts) {
     }
     virtual void onDraw() {
     }

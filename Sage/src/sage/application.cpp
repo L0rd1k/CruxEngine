@@ -76,10 +76,26 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
     return true;
 }
 
+void Application::fpsCounter() {
+    if (_fpsTimer.elapsedSec() > 1) {
+        Log::trace("FPS :", _fpsCounter);
+        _fpsTimer.restart();
+        _fpsCounter = 0;
+    }
+    _fpsCounter++;
+}
+
 void Application::run() {
     while (_isRunning) {
+        
+        fpsCounter();
+
+        float time = (float)glfwGetTime();
+        Timestep t_step = time - _last_time;
+        _last_time = time;
+
         for (Layer* layer : _layerSet) {
-            layer->onUpdate();
+            layer->onUpdate(t_step);
         }
         _guiLayer->begin();
         for (Layer* layer : _layerSet) {

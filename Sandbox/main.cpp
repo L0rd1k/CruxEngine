@@ -22,11 +22,11 @@ public:
         _indexBuffer.reset(sage::IndexBufferBuilder::create(indices, sizeof(indices) / sizeof(indices[0])));
         _vertexArray->addIndexBuffer(_indexBuffer);
         /** @warning remove absolute path **/
-        ShaderData data = parseShader("../../Sage/data/test.shader");
+        ShaderData data = parseShader("../../Sage/data/shaders/test.shader");
         _shader.reset(new sage::Shader(data.VertexData, data.FragmentData));
 
         /** ======================= SECOND ELEMENT ======================== **/
-        ShaderData data2 = parseShader("../../Sage/data/test2.shader");
+        ShaderData data2 = parseShader("../../Sage/data/shaders/test2.shader");
         _shader2.reset(new sage::Shader(data2.VertexData, data2.FragmentData));
         _squareVertexArray.reset(sage::VertexArrayBuilder::create());
         float posSquare[3 * 4] = {
@@ -45,29 +45,30 @@ public:
         _suqareindexBuffer.reset(sage::IndexBufferBuilder::create(squareIndices, sizeof(squareIndices) / sizeof(squareIndices[0])));
         _squareVertexArray->addIndexBuffer(_suqareindexBuffer);
     }
-    void onUpdate() override {
+
+    void onUpdate(sage::Timestep timestep) override {
         // auto pos = sage::Input::getMousePos();
         // sage::Log::info(pos.first, "/", pos.second);
         // if (sage::Input::isKeyPressed(SAGE_KEY_TAB)) {
         //     sage::Log::trace("Tab is pressed");
         // }
         if (sage::Input::isKeyPressed(SAGE_KEY_LEFT)) {
-            _camPosition.x -= _camMoveSpeed;
-        } 
+            _camPosition.x -= _camMoveSpeed * timestep;
+        }
         if (sage::Input::isKeyPressed(SAGE_KEY_RIGHT)) {
-            _camPosition.x += _camMoveSpeed;
-        } 
+            _camPosition.x += _camMoveSpeed * timestep;
+        }
         if (sage::Input::isKeyPressed(SAGE_KEY_UP)) {
-            _camPosition.y += _camMoveSpeed;
-        } 
+            _camPosition.y += _camMoveSpeed * timestep;
+        }
         if (sage::Input::isKeyPressed(SAGE_KEY_DOWN)) {
-            _camPosition.y -= _camMoveSpeed;
-        } 
+            _camPosition.y -= _camMoveSpeed * timestep;
+        }
         if (sage::Input::isKeyPressed(SAGE_KEY_Q)) {
-            _camRotation += _camRotationSpeed;
-        } 
+            _camRotation += _camRotationSpeed * timestep;
+        }
         if (sage::Input::isKeyPressed(SAGE_KEY_E)) {
-            _camRotation -= _camRotationSpeed;
+            _camRotation -= _camRotationSpeed * timestep;
         }
 
         sage::RenderCmd::clearColor({0.1f, 0.1f, 0.1f, 1.0f});
@@ -105,9 +106,9 @@ private:
 
     sage::OrthographicCamera _cam;
     glm::vec3 _camPosition;
-    float _camMoveSpeed = 0.01f;
-    float _camRotationSpeed = 1.0f;
 
+    float _camMoveSpeed = 5.0f;
+    float _camRotationSpeed = 180.0f;
     float _camRotation = 0.0f;
 };
 
