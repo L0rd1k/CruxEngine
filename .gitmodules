@@ -1,17 +1,14 @@
-[submodule "Sage/3rdParty/GLFW"]
-	path = Sage/3rdParty/GLFW
+[submodule "Crux/3rdParty/GLFW"]
+	path = Crux/3rdParty/GLFW
 	url = https://github.com/glfw/glfw
-[submodule "Sage/3rdParty/GLAD"]
-	path = Sage/3rdParty/GLAD
+[submodule "Crux/3rdParty/GLAD"]
+	path = Crux/3rdParty/GLAD
 	url = https://github.com/Dav1dde/glad
 	ignore = dirty
-[submodule "glfw"]
-	path = glfw
-	url = https://github.com/glfw/glfw
-[submodule "Sage/3rdParty/ImGui"]
-	path = Sage/3rdParty/ImGui
+[submodule "Crux/3rdParty/ImGui"]
+	path = Crux/3rdParty/ImGui
 	url = https://github.com/ocornut/imgui.git
 	ignore = dirty
-[submodule "Sage/3rdParty/GLM"]
-	path = Sage/3rdParty/GLM
+[submodule "Crux/3rdParty/GLM"]
+	path = Crux/3rdParty/GLM
 	url = https://github.com/g-truc/glm.git
