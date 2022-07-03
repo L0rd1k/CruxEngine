@@ -1,4 +1,4 @@
-workspace "SageEngine"
+workspace "CruxEngine"
    architecture "x64"
 
    configurations { 
@@ -9,11 +9,11 @@ workspace "SageEngine"
 finalDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Sage/3rdParty/GLFW/include"
-include "Sage/3rdParty/GLFW"
+IncludeDir["GLFW"] = "Crux/3rdParty/GLFW/include"
+include "Crux/3rdParty/GLFW"
 
-project "Sage"
-   location "Sage"
+project "Crux"
+   location "Crux"
    kind "SharedLib"
    language "C++"
 
@@ -68,11 +68,11 @@ project "Sandbox"
    }
 
    includedirs {
-      "Sage/src",
+      "Crux/src",
    }
 
    links {
-      "Sage"
+      "Crux"
    }
 
    filter "system:linux"
