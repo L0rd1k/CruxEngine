@@ -10,7 +10,7 @@ void OpenGlRendererAPI::clearColor(const glm::vec4& color) {
     glClearColor(color.r, color.g, color.b, color.a);
 }
 
-void OpenGlRendererAPI::drawIndexed(const std::shared_ptr<VertexArray>& vao) {
+void OpenGlRendererAPI::drawIndexed(const crux_shared<VertexArray>& vao) {
     glDrawElements(GL_TRIANGLES, vao->getIndexBuffer()->getSize(), GL_UNSIGNED_INT, nullptr);
 }
 

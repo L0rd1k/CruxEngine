@@ -52,7 +52,7 @@ void OpenGlVertexArray::unbind() const {
     glBindVertexArray(0);
 }
 
-void OpenGlVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBufer) {
+void OpenGlVertexArray::addVertexBuffer(const crux_shared<VertexBuffer>& vertexBufer) {
     assert(vertexBufer->getLayout().getElements().size() && "Vertex buffer doesn't have layout");
 
     glBindVertexArray(_rendererId);
@@ -73,18 +73,18 @@ void OpenGlVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& ver
     _vertexBuffer.push_back(vertexBufer);
 }
 
-void OpenGlVertexArray::addIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBufer) {
+void OpenGlVertexArray::addIndexBuffer(const crux_shared<IndexBuffer>& indexBufer) {
     glBindVertexArray(_rendererId);
     //> Assign index buffer to current vertex array.
     indexBufer->bind();
     _indexBuffer = indexBufer;
 }
 
-const std::vector<std::shared_ptr<VertexBuffer>>& OpenGlVertexArray::getVertexBuffers() const {
+const std::vector<crux_shared<VertexBuffer>>& OpenGlVertexArray::getVertexBuffers() const {
     return _vertexBuffer;
 }
 
-const std::shared_ptr<IndexBuffer>& OpenGlVertexArray::getIndexBuffer() const {
+const crux_shared<IndexBuffer>& OpenGlVertexArray::getIndexBuffer() const {
     return _indexBuffer;
 }
 

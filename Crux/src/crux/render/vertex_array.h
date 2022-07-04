@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "src/crux/core.h"
+
 #include "vertex_buffer.h"
 #include "index_buffer.h"
 
@@ -22,17 +24,17 @@ public:
 
     /** @brief Abstraction of enabling a generic VAO.
      * @param[in] vertexBufer Pointer to VBO class. **/
-    virtual void addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBufer) = 0;
+    virtual void addVertexBuffer(const crux_shared<VertexBuffer>& vertexBufer) = 0;
 
     /** @brief Abstraction of enabling VBO indexing .
      * @param[in] vertexBufer Pointer to index buffer class. **/
-    virtual void addIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBufer) = 0;
+    virtual void addIndexBuffer(const crux_shared<IndexBuffer>& indexBufer) = 0;
 
     /** @brief Abstraction of getting list of used VBO. **/
-    virtual const std::vector<std::shared_ptr<VertexBuffer>>& getVertexBuffers() const = 0;
+    virtual const std::vector<crux_shared<VertexBuffer>>& getVertexBuffers() const = 0;
 
     /** @brief Abstraction of used Index Buffer . **/
-    virtual const std::shared_ptr<IndexBuffer>& getIndexBuffer() const = 0;
+    virtual const crux_shared<IndexBuffer>& getIndexBuffer() const = 0;
 
 };
 

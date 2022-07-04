@@ -3,8 +3,8 @@
 #include <inttypes.h>
 
 #include <cassert>
-#include "src/crux/dstructs/iterators/iterator_lagacy_random_access.h"
-#include "src/crux/dstructs/iterators/iterator_reverse.h"
+#include "src/utility/dstructs/iterators/iterator_lagacy_random_access.h"
+#include "src/utility/dstructs/iterators/iterator_reverse.h"
 namespace crux {
 
 template <typename Type, int32_t ArrSize>

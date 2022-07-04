@@ -2,68 +2,143 @@
 
 skinparam componentStyle rectangle
 
+package Crux #dde3bb {
+    
+'     class Layer {}
+'     class LayerSet {}
+'     LayerSet *-- Layer
+    
+' package Gui #dde7db {
+'     class GuiLayer {}
+'     Layer <|-- GuiLayer
+' }
+
+' package Gui #dde7db {
+'     class GuiLayer {}
+'     Layer <|-- GuiLayer
+' }
+
+' package Events #dde7db {
+'     class Event {}
+'     class EventDispatcher {}
+'     Event <|-- EventDispatcher
+
+'     class KeyEvent {}
+'     Event <|-- KeyEvent
+
+'     class KeyPressedEvent {}
+'     KeyEvent <|-- KeyPressedEvent
+
+'     class KeyReleasedEvent {}
+'     KeyEvent <|-- KeyReleasedEvent
+    
+'     class KeyTypedEvent {}
+'     KeyEvent <|-- KeyTypedEvent
+
+'     class MouseMovedEvent {}
+'     Event <|-- MouseMovedEvent
+
+'     class MouseScrolledEvent {}
+'     Event <|-- MouseScrolledEvent
+
+'     class MouseButtonEvent {}
+'     Event <|-- MouseButtonEvent
+
+'     class MouseButtonPressedEvent {}
+'     MouseButtonEvent <|-- MouseButtonPressedEvent
+    
+'     class MouseButtonReleasedEvent {}
+'     MouseButtonEvent <|-- MouseButtonReleasedEvent
+' }
+
+
 package Renderer #dde7eb {
 
-    package OpenGL #dde7eb {
-        class OpenGlVertexBuffer {}
-        class OpenGlVertexArray {}
-        class OpenGlRendererContext {}
-        class OpenGlIndexBuffer {}
-        class OpenGlRendererAPI {}
-    }
+' =============================================================== '
+    class OpenGlVertexBuffer {}
+    VertexBuffer <|-- OpenGlVertexBuffer
+    BufferLayout o-- OpenGlVertexBuffer
 
-    package Buffer #dde7eb {
-        abstract VertexBuffer {}
-        BufferLayout o-- VertexBuffer
-        abstract IndexBuffer {}
-        class BufferLayout {}
-        class BufferElement {}
-    }
+    class OpenGlVertexArray {}
+    VertexArray <|-- OpenGlVertexArray
+    VertexBuffer o-- OpenGlVertexArray
+    IndexBuffer o-- OpenGlVertexArray
 
+    class OpenGlRendererContext {}
+    RendererContext <|-- OpenGlRendererContext
+
+    class OpenGlIndexBuffer {}
+    IndexBuffer <|-- OpenGlIndexBuffer
+
+    class OpenGlRendererAPI {}
+    RendererApi <|-- OpenGlRendererAPI
+    VertexArray o-- OpenGlRendererAPI
+
+    class OpenGlShader {}
+    Shader <|-- OpenGlShader
+
+    class OpenGlTexture2D{}
+    Texture2D <|-- OpenGlTexture2D
+' =============================================================== '
+
+    abstract VertexBuffer {}
+    BufferLayout o-- VertexBuffer
+
+    abstract IndexBuffer {}
+
+    class BufferLayout {}
+    BufferElement o-- BufferLayout
+
+    class BufferElement {}
+
+' =============================================================== '
     package Builder #dde7eb {
-        class VertexArrayBuilder {} 
+        class VertexArrayBuilder {}
         class VertexBufferBuilder {}
         class IndexBufferBuilder {}
+        class Texture2DBuilder {}
     }
 
     OpenGlVertexArray *-- VertexArrayBuilder
     OpenGlVertexBuffer *-- VertexBufferBuilder
     OpenGlIndexBuffer *-- IndexBufferBuilder
+    Texture2D *-- Texture2DBuilder
+' =============================================================== '
 
     abstract VertexArray {}
-
     VertexBuffer *-- VertexArray
     IndexBuffer *-- VertexArray
 
     class Shader {}
+
     class Renderer {}
-    enum RendererType {}
+    OrthographicCamera o-- Renderer
+    VertexArray o-- Renderer
+    Shader o-- Renderer
+    RendererApi o-- Renderer
+    OpenGlShader o-- Renderer
+    RenderCmd o-- Renderer
+
     interface RendererContext {}
+
     abstract RendererApi {}
+    VertexArray o-- RendererApi
+
     class RenderCmd {}
+    VertexArray o-- RenderCmd
+    RendererApi *-- RenderCmd
+    OpenGlRendererAPI o-- RenderCmd
 
-    RendererContext <|-- OpenGlRendererContext
+    class OrthographicCamera {}
 
-    VertexBuffer <|-- OpenGlVertexBuffer
 
-    BufferLayout *-- OpenGlVertexBuffer
+    class Texture {}
+    class Texture2D {}
+    Texture <|-- Texture2D
 
-    IndexBuffer <|-- OpenGlIndexBuffer
-
-    VertexArray <|-- OpenGlVertexArray
-    VertexBuffer *-- OpenGlVertexArray 
-    IndexBuffer *-- OpenGlVertexArray 
-
-    RendererApi <|-- OpenGlRendererAPI
-    Renderer *-- RendererType
-    RendererApi *-- RendererType
-
-    RenderCmd *-- RendererApi
-    RenderCmd *-- OpenGlRendererAPI 
-
-    BufferLayout *-- BufferElement
 }
 
+}
 
 @enduml
 

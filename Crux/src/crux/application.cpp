@@ -2,12 +2,12 @@
 
 namespace crux {
 
-std::unique_ptr<Window> Application::_window = nullptr;
+crux_unique<Window> Application::_window = nullptr;
 Application* Application::_appInstance = nullptr;
 
 Application::Application() {
     _appInstance = this;
-    _window = std::unique_ptr<Window>(Window::create());
+    _window = crux_unique<Window>(Window::create());
     _window->setEventCallback(std::bind(&Application::onApplyEvent, this, std::placeholders::_1));
 
     _guiLayer = new GuiLayer();

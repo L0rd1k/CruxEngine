@@ -15,14 +15,14 @@ public:
     virtual void bind() const override;
     virtual void unbind() const override;
 
-    virtual void addVertexBuffer(const std::shared_ptr<VertexBuffer> & vertexBufer) override;
-    virtual void addIndexBuffer(const std::shared_ptr<IndexBuffer> & indexBufer) override;
+    virtual void addVertexBuffer(const crux_shared<VertexBuffer> & vertexBufer) override;
+    virtual void addIndexBuffer(const crux_shared<IndexBuffer> & indexBufer) override;
 
-    virtual const std::vector<std::shared_ptr<VertexBuffer>>& getVertexBuffers() const override;
-    virtual const std::shared_ptr<IndexBuffer>& getIndexBuffer() const override;
+    virtual const std::vector<crux_shared<VertexBuffer>>& getVertexBuffers() const override;
+    virtual const crux_shared<IndexBuffer>& getIndexBuffer() const override;
 private:
-    std::vector<std::shared_ptr<VertexBuffer>> _vertexBuffer;
-    std::shared_ptr<IndexBuffer> _indexBuffer;
+    std::vector<crux_shared<VertexBuffer>> _vertexBuffer;
+    crux_shared<IndexBuffer> _indexBuffer;
     uint32_t _rendererId;
 };
 

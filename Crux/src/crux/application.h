@@ -5,18 +5,15 @@
 #include <memory>
 #include <vector>
 
+#include "src/crux/core.h"
 
 #include "core/timestep.h"
 #include "events/application_event.h"
+
 #include "events/event.h"
 #include "gui/gui_layer.h"
 #include "layer/layer_set.h"
-#include "render/buffer_layout.h"
 #include "render/builder/buffer_builder.h"
-#include "render/cameras/ortho_camera.h"
-#include "render/index_buffer.h"
-#include "render/renderer.h"
-#include "render/renderer_api.h"
 #include "render/shader.h"
 #include "utils/logger/log.h"
 #include "utils/timer/elapsed_timer.h"
@@ -48,7 +45,7 @@ private:
     void fpsCounter();
 
 private:
-    static std::unique_ptr<Window> _window;
+    static crux_unique<Window> _window;
 
     GuiLayer* _guiLayer;
     bool _isRunning = true;

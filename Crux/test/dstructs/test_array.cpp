@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "src/crux/dstructs/array/array.h"
-#include "src/crux/dstructs/iterators/iterator_lagacy_random_access.h"
+#include "src/utility/dstructs/array/array.h"
+#include "src/utility/dstructs/iterators/iterator_lagacy_random_access.h"
 
 crux::array<int, 5> arr = {9, 7, 5, 3, 1};
 

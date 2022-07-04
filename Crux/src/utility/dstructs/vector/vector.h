@@ -1,12 +1,12 @@
 #pragma once
 
-#include "src/crux/dstructs/allocator/allocator.h"
-#include "src/crux/dstructs/iterators/iterator_forward.h"
-#include "src/crux/dstructs/iterators/iterator_lagacy_random_access.h"
-#include "src/crux/dstructs/iterators/iterator_operations.h"
-#include "src/crux/dstructs/iterators/iterator_reverse.h"
-#include "src/crux/dstructs/vector/vector_base.h"
-#include "src/crux/utils/memory/memory.h"
+#include "src/utility/dstructs/allocator/allocator.h"
+#include "src/utility/dstructs/iterators/iterator_forward.h"
+#include "src/utility/dstructs/iterators/iterator_lagacy_random_access.h"
+#include "src/utility/dstructs/iterators/iterator_operations.h"
+#include "src/utility/dstructs/iterators/iterator_reverse.h"
+#include "src/utility/dstructs/vector/vector_base.h"
+#include "src/utility/utils/memory/memory.h"
 
 namespace crux {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/crux/dstructs/iterators/iterator_forward.h"
+#include "src/utility/dstructs/iterators/iterator_forward.h"
 
 namespace crux {
 

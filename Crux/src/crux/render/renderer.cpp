@@ -18,8 +18,8 @@ void Renderer::startScene(OrthographicCamera& cam) {
 void Renderer::endScene() {
 }
 
-void Renderer::submit(const std::shared_ptr<VertexArray>& vao,
-                      const std::shared_ptr<Shader>& shader,
+void Renderer::submit(const crux_shared<VertexArray>& vao,
+                      const crux_shared<Shader>& shader,
                       const glm::mat4& transform) {
     shader->bind();
 

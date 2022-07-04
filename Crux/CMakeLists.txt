@@ -28,7 +28,7 @@ set(SOURCES
     src/crux/render/opengl/opengl_vertex_array.cpp
     src/crux/render/opengl/opengl_renderer_api.cpp
     src/crux/render/opengl/opengl_shader.cpp
-
+    src/crux/render/opengl/opengl_texture2d.cpp
 )
 
 if(USE_IMGUI)

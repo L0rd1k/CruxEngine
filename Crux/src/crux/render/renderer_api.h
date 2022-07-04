@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "vertex_array.h"
+#include "src/crux/core.h"
 
 namespace crux {
 
@@ -24,7 +25,7 @@ public:
     virtual void clearColor(const glm::vec4& color) = 0;
 
     /** @brief Abstraction for render primitives from array data. **/
-    virtual void drawIndexed(const std::shared_ptr<VertexArray>& vao) = 0;
+    virtual void drawIndexed(const crux_shared<VertexArray>& vao) = 0;
 
     /** @brief Get currently used render API type. **/
     inline static RendererType getAPI() {

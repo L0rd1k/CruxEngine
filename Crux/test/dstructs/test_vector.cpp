@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "src/crux/dstructs/iterators/iterator_lagacy_random_access.h"
-#include "src/crux/dstructs/vector/vector.h"
+#include "src/utility/dstructs/iterators/iterator_lagacy_random_access.h"
+#include "src/utility/dstructs/vector/vector.h"
 
 crux::vector<int> vec;
 

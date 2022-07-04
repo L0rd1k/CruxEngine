@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "src/crux/core.h"
+
 #include "src/crux/window/window.h"
 #include "src/crux/events/key_event.h"
 #include "src/crux/events/mouse_event.h"
@@ -46,7 +48,7 @@ private:
 
     WindowData _data;
 
-    std::unique_ptr<RendererContext> _context;
+    crux_unique<RendererContext> _context;
 
 };
 

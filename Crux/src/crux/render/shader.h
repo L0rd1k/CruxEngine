@@ -1,36 +1,46 @@
 #pragma once
 
+#include <array>
+#include <cassert>
+#include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-#include <cassert>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <sstream>
-#include <array>
 
 #include "src/crux/utils/logger/log.h"
 
 namespace crux {
 
+/** @brief Avaliable shader types. **/
 enum class ShaderFormat {
-    VERTEX = 0,
-    FRAGMENT = 1,
-    UNDEFINED = 255
+    VERTEX = 0,      //> Vertex shader
+    FRAGMENT = 1,    //> Fragment shader
+    UNDEFINED = 255  //> Shader type not defined
 };
 
+/** @brief Shader sources data. **/
 struct ShaderData {
-    std::string VertexData;
-    std::string FragmentData;
+    std::string VertexData;    //> Vertex source
+    std::string FragmentData;  //> Fragment source
 };
 
+/** @brief Abstract shader class. **/
 class Shader {
 public:
+    /** @brief Shader destructor. **/
     virtual ~Shader() = default;
+
+    /** @brief Abstract shader binding. **/
     virtual void bind() const = 0;
+
+    /** @brief Abstract shader unbinding. **/
     virtual void unbind() const = 0;
 
+    /** @brief Parse single shader file to vertex and fragment sources.
+     * @param[in] path Path to shader source file.
+     * @return Return shader data(vertex and fragment sources). **/
     static ShaderData parseShader(const std::string& path) {
         std::ifstream shaderStream(path);
         if (!shaderStream.is_open()) {

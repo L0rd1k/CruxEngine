@@ -1,6 +1,5 @@
 #pragma once
 
-
 extern crux::Application* crux::CreateApplication();
 
 int main(int argc, char** argv) {

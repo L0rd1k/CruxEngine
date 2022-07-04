@@ -12,7 +12,7 @@ public:
     virtual ~OpenGlVertexBuffer();
     virtual void bind() const override;
     virtual void unbind() const override;
-
+    
     virtual void setLayout(const BufferLayout& layout) override {
         _layout = layout;
     }

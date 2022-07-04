@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "src/crux/dstructs/array/array.h"
-#include "src/crux/dstructs/iterators/iterator_bidirectional.h"
+#include "src/utility/dstructs/array/array.h"
+#include "src/utility/dstructs/iterators/iterator_bidirectional.h"
 
 crux::array<int, 6> arr = {2, 7, 3, 82, 21, 55};
 

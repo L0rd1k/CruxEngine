@@ -10,7 +10,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 #> Crux engine supported options
 option(USE_IMGUI "Enable ImGui library support support" ON)
-option(USE_GTEST "Enable google test support" OFF)
+option(USE_GTEST "Enable google test support" ON)
 
 #> Crux engine definitions
 if (USE_IMGUI)

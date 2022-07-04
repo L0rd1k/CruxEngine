@@ -9,7 +9,7 @@ class OpenGlRendererAPI : public RendererApi {
 public:
     virtual void clear() override;
     virtual void clearColor(const glm::vec4& color) override;
-    virtual void drawIndexed(const std::shared_ptr<VertexArray>& vao) override;
+    virtual void drawIndexed(const crux_shared<VertexArray>& vao) override;
 };
 
 }  // namespace crux

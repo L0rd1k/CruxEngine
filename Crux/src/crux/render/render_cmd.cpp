@@ -11,7 +11,7 @@ void RenderCmd::clear() {
     _rendererApi->clear();
 }
 
-void RenderCmd::drawIndexed(const std::shared_ptr<VertexArray>& vao) {
+void RenderCmd::drawIndexed(const crux_shared<VertexArray>& vao) {
     _rendererApi->drawIndexed(vao);
 }
 
